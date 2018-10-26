@@ -1,40 +1,44 @@
 <template>
+
   <v-hover>
-    <v-layout
-        column
+    <v-responsive
+        :aspect-ratio="91/141"
+        width="182px"
         class="coffee-tile secondary"
         slot-scope="{ hover }"
         :class="`lighten-${ hover ? 2 : 1 }`"
     >
-      <v-flex shrink>
-        <v-responsive :aspect-ratio="1/1">
-          <img :src="coffee.img" :alt="`${coffee.name} image`" class="coffee-img">
-        </v-responsive>
-      </v-flex>
-      <v-flex class="py-1 px-3">
-        <v-layout wrap>
-          <v-flex xs12>
-            <h3 class="coffee-name white--text">{{ coffee.name }}</h3>
-          </v-flex>
-          <v-flex xs12>
-            <h4 class="coffee-desc">{{ coffee.desc }}</h4>
-          </v-flex>
-          <v-flex xs12>
-            <v-layout>
-              <v-flex>
-                <intensity
-                    :length="12"
-                    :value="coffee.intensity"
-                />
-              </v-flex>
-              <v-flex shrink>
-                <img :src="typeIcon" alt="Type café">
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+      <v-layout column fill-height>
+        <v-flex shrink>
+          <v-responsive :aspect-ratio="1/1">
+            <img :src="coffee.img" :alt="`${coffee.name} image`" class="coffee-img">
+          </v-responsive>
+        </v-flex>
+        <v-flex class="py-1 px-3">
+          <v-layout wrap>
+            <v-flex xs12>
+              <h3 class="coffee-name white--text">{{ coffee.name }}</h3>
+            </v-flex>
+            <v-flex xs12>
+              <h4 class="coffee-desc">{{ coffee.desc }}</h4>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex shrink class="px-2">
+          <v-layout>
+            <v-flex>
+              <intensity
+                  :length="12"
+                  :value="coffee.intensity"
+              />
+            </v-flex>
+            <v-flex shrink>
+              <img :src="typeIcon" alt="Type café">
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-responsive>
   </v-hover>
 </template>
 <script lang="ts">
@@ -54,11 +58,11 @@ export default class CoffeeTile extends Vue {
   get typeIcon (): string {
     switch (this.coffee.type) {
       case 'ristretto':
-        return require('@/assets/icons/small.png')
+        return require('@/assets/icons/small.png');
       case 'espresso':
-        return require('@/assets/icons/medium.png')
+        return require('@/assets/icons/medium.png');
       default:
-        return require('@/assets/icons/large.png')
+        return require('@/assets/icons/large.png');
     }
   }
 }

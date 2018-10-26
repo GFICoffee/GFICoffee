@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@mdi/font": "^3.0.39",
+    "@types/lodash": "^4.14.117",
+    "lodash": "^4.17.11",
     "material-design-icons-iconfont": "^3.0.3",
     "vue": "^2.5.2",
     "vue-class-component": "^6.0.0",

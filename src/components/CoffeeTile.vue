@@ -6,7 +6,8 @@
         width="182px"
         class="coffee-tile secondary"
         slot-scope="{ hover }"
-        :class="`lighten-${ hover ? 2 : 1 }`"
+        :class="`lighten-${ hover || coffee.selected ? 2 : 1 }`"
+        @click="coffee.selected = !coffee.selected; $emit('input', coffee)"
     >
       <v-layout column fill-height>
         <v-flex shrink>
@@ -42,7 +43,7 @@
   </v-hover>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Intensity from '@/components/Intensity.vue';
 import Coffee from '@/models/CoffeeInterface';
 
@@ -53,7 +54,15 @@ import Coffee from '@/models/CoffeeInterface';
 })
 export default class CoffeeTile extends Vue {
   @Prop({ required: true })
-  coffee!: Coffee;
+  value!: Coffee;
+
+  coffee: Coffee | null = null
+
+
+  @Watch('value', { immediate: true })
+  onValueChanged () {
+    this.coffee = this.value
+  }
 
   get typeIcon (): string {
     switch (this.coffee.type) {

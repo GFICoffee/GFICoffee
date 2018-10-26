@@ -1,7 +1,19 @@
 <template>
-  <v-layout justify-center class="coffee-grid">
+  <v-layout justify-center class="coffee-grid mt-4">
     <v-flex class="coffee-grid__frame">
       <v-layout wrap>
+        <v-flex xs12 class="mb-4">
+          <v-layout wrap>
+            <v-flex xs12>
+              <div class="coffee-connector">&nbsp;</div>
+            </v-flex>
+            <v-flex class="fragments-five coffee-name">Ristretto</v-flex>
+            <v-flex class="fragments-five coffee-name">Espresso</v-flex>
+            <v-flex class="fragments-five coffee-name">Lungo</v-flex>
+            <v-flex class="fragments-five coffee-name">Decaffeinato</v-flex>
+            <v-flex class="fragments-five coffee-name">Variations</v-flex>
+          </v-layout>
+        </v-flex>
         <v-flex shrink v-for="(coffee, i) of coffeeList" :key="i">
           <coffee-tile :coffee="coffee"/>
         </v-flex>
@@ -42,5 +54,40 @@ export default class CoffeeGrid extends Vue {
 .coffee-grid__frame {
   max-width: 910px;
   flex-basis: 910px;
+}
+
+.fragments-five {
+  max-width: 20%;
+  flex-basis: 20%;
+}
+
+.coffee-name {
+  text-transform: uppercase;
+  text-align: center;
+  font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;
+  font-size: 18px;
+  color: #B3B3B3 !important;
+}
+
+.coffee-name::before {
+  border-left: 1px solid #4e4e4e;
+  display: block;
+  content: '';
+  width: 1px;
+  height: 7px;
+  position: relative;
+  left: 50%;
+  top: -5px;
+  transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+}
+
+.coffee-connector {
+  border-top: 1px solid #4e4e4e;
+  width: 729px;
+  margin: 0 auto;
+  height: 1px;
+  position: relative;
+  top: -5px;
 }
 </style>

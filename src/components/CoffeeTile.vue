@@ -65,14 +65,17 @@ export default class CoffeeTile extends Vue {
   }
 
   get typeIcon (): string {
-    switch (this.coffee.type) {
-      case 'ristretto':
-        return require('@/assets/icons/small.png');
-      case 'espresso':
-        return require('@/assets/icons/medium.png');
-      default:
-        return require('@/assets/icons/large.png');
+    if (this.coffee) {
+      switch (this.coffee.type) {
+        case 'ristretto':
+          return require('@/assets/icons/small.png')
+        case 'espresso':
+          return require('@/assets/icons/medium.png')
+        default:
+          return require('@/assets/icons/large.png')
+      }
     }
+    return require('@/assets/icons/large.png')
   }
 }
 </script>

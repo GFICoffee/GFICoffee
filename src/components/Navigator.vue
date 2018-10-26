@@ -1,6 +1,6 @@
 <template>
   <v-layout wrap justify-center class="navigator py-3">
-    <v-flex xs12 sm8>
+    <v-flex sm8 :shrink="$vuetify.breakpoint.xsOnly">
       <v-layout class="logos">
         <v-flex shrink>
           <img :src="logo" alt="Logo GFI" height="60">
@@ -18,13 +18,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import logo from '@/assets/logo.png'
-import logoNespresso from '@/assets/nespresso-logo.png'
 
 @Component
 export default class Navigator extends Vue {
-  logo: string = logo
-  logoNespresso: string = logoNespresso
+  logo: string = require('@/assets/logo.png')
+  logoNespresso: string = require('@/assets/nespresso-logo.png')
 }
 </script>
 

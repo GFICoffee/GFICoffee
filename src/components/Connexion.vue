@@ -20,8 +20,11 @@
                 label="Mot de passe"
                 :rules="passwordRules"
                 :required="true"
+                :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+                :type="showPassword ? 'text' : 'password'"
                 color="white"
                 dark
+                @click:append="showPassword = !showPassword"
             />
           </v-flex>
         </v-layout>
@@ -49,6 +52,7 @@ export default class Connexion extends Vue {
   auth!: IAuth<UsernamePasswordCredentials, any>
 
   valid: boolean = false
+  showPassword: boolean = false
   credentials: { email: string, password: string } = { email: '', password: '' }
   emailRules: any[] = [
     (v?: string) => !!v || 'Champs requis'

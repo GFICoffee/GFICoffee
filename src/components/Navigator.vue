@@ -29,13 +29,13 @@
         v-model="signinDialog"
         width="500"
     >
-      <connexion/>
+      <connexion @close="signinDialog = false"/>
     </v-dialog>
     <v-dialog
         v-model="signupDialog"
         width="500"
     >
-      <inscription/>
+      <inscription @close="signupDialog = false"/>
     </v-dialog>
   </v-layout>
 </template>
@@ -43,7 +43,7 @@
 import { Vue, Component, Inject } from 'vue-property-decorator'
 import Connexion from '@/components/Connexion.vue'
 import Inscription from '@/components/Inscription.vue'
-import { IAuth, UsernamePasswordCredentials } from '../jwt-toolbox/auth'
+import { IAuth, UsernamePasswordCredentials } from '@/jwt-toolbox/auth'
 
 @Component({
   components: {

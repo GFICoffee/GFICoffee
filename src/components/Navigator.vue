@@ -11,18 +11,61 @@
         <v-flex shrink>
           <img :src="logoNespresso" alt="Logo Nespresso" height="60">
         </v-flex>
+        <v-spacer/>
+        <v-flex shrink>
+          <v-layout column justify-center fill-height class="white--text">
+            <template v-if="!authenticated">
+            <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="signinDialog = true">Connexion</v-flex>
+            <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="signupDialog = true">Inscription</v-flex>
+            </template>
+            <template v-else>
+              <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="auth.logout()">Déconnexion</v-flex>
+            </template>
+          </v-layout>
+        </v-flex>
       </v-layout>
     </v-flex>
+    <v-dialog
+        v-model="signinDialog"
+        width="500"
+    >
+      <connexion/>
+    </v-dialog>
+    <v-dialog
+        v-model="signupDialog"
+        width="500"
+    >
+      <inscription/>
+    </v-dialog>
   </v-layout>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import { Vue, Component, Inject } from 'vue-property-decorator'
+import Connexion from '@/components/Connexion.vue'
+import Inscription from '@/components/Inscription.vue'
+import { IAuth, UsernamePasswordCredentials } from '../jwt-toolbox/auth'
 
-@Component
+@Component({
+  components: {
+    Connexion,
+    Inscription
+  }
+})
 export default class Navigator extends Vue {
+  @Inject()
+  auth!: IAuth<UsernamePasswordCredentials, any>
+
   logo: string = require('@/assets/logo.png')
   logoNespresso: string = require('@/assets/nespresso-logo.png')
+  signinDialog: boolean = false
+  signupDialog: boolean = false
+  authenticated: boolean = false
+
+  mounted () {
+    this.auth.addListeners({tokensChanged: (tokens: any) => {
+      this.authenticated = !!tokens
+    }})
+  }
 }
 </script>
 
@@ -39,5 +82,9 @@ export default class Navigator extends Vue {
   top: 60%;
   transform: translateY(-50%);
   font-size: 1em;
+}
+
+.pointer {
+  cursor: pointer;
 }
 </style>

@@ -67,7 +67,7 @@ import UserResource from '@/api/User'
 @Component
 export default class Inscription extends Vue {
   @Inject()
-  userResource: UserResource
+  userResource!: UserResource
 
   credentials: UserWithPasswordModel = { email: '', password: '' }
   passwordConfirmation: string = ''
@@ -79,13 +79,13 @@ export default class Inscription extends Vue {
   loading: boolean = false
 
   emailRules: any[] = [
-    (v?: string) => !!v || 'Champs requis',
-    (v?: string) => /.+@gfi\.fr/.test(v) || 'Vous devez utiliser une adresse GFI'
+    (v: string) => !!v || 'Champs requis',
+    (v: string) => /.+@gfi\.fr/.test(v) || 'Vous devez utiliser une adresse GFI'
   ]
 
   passwordRules: any[] = [
-    (v?: string) => !!v || 'Champs requis',
-    (v?: string) => v.length >= 6 || 'Le mot de passe doit contenir au moins 6 caractères'
+    (v: string) => !!v || 'Champs requis',
+    (v: string) => v.length >= 6 || 'Le mot de passe doit contenir au moins 6 caractères'
   ]
 
   get confirmationPasswordRules (): any[] {

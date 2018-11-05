@@ -8,6 +8,7 @@ import './hooks' // This must be imported before any component
 import './styles/fonts.css'
 import './styles/global.css'
 import services from './services'
+import store from './store'
 
 import App from './App.vue'
 import router from './router'
@@ -31,6 +32,7 @@ Vue.prototype.$utils = {
 // tslint:disable-next-line:no-unused-expression
 new Vue({
   router,
+  store,
   provide: { ...services },
   render: (h) => h(App)
 }).$mount('#app')

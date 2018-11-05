@@ -1,7 +1,7 @@
 <template>
   <div class="Home">
-    <coffee-grid @input="(e) => { selectedCoffee = e }"/>
-    <v-layout justify-center>
+    <coffee-grid @input="(e) => {  selectedCoffee = e }"/>
+    <v-layout justify-center v-if="authenticated">
       <v-flex md9 xs12>
         <v-layout column>
           <v-flex v-for="(coffee, i) of selectedCoffee" :key="i" class="coffee-choice pt-4 pb-2">
@@ -56,9 +56,11 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Inject } from 'vue-property-decorator';
 import CoffeeGrid from '@/components/CoffeeGrid.vue'
 import Coffee from '@/models/CoffeeInterface'
+import { IAuth, UsernamePasswordCredentials } from '../jwt-toolbox/auth';
+import { GetterAuth } from '../store/auth'
 
 @Component({
   components: {
@@ -66,6 +68,11 @@ import Coffee from '@/models/CoffeeInterface'
   }
 })
 export default class Home extends Vue {
+  @Inject()
+  auth!: IAuth<UsernamePasswordCredentials, any>
+  @GetterAuth
+  authenticated!: boolean
+
   selectedCoffee: Coffee[] = []
   quantities: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 

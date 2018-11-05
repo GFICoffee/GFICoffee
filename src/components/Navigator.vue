@@ -44,6 +44,9 @@ import { Vue, Component, Inject } from 'vue-property-decorator'
 import Connexion from '@/components/Connexion.vue'
 import Inscription from '@/components/Inscription.vue'
 import { IAuth, UsernamePasswordCredentials } from '@/jwt-toolbox/auth'
+import { decode } from 'jsonwebtoken'
+import { GetterAuth, Payload, StateAuth, MutationAuth } from '@/store/auth'
+
 
 @Component({
   components: {
@@ -54,16 +57,21 @@ import { IAuth, UsernamePasswordCredentials } from '@/jwt-toolbox/auth'
 export default class Navigator extends Vue {
   @Inject()
   auth!: IAuth<UsernamePasswordCredentials, any>
+  @GetterAuth
+  authenticated!: boolean
+  @MutationAuth
+  setPayload!: (payload: Payload) => void
 
   logo: string = require('@/assets/logo.png')
   logoNespresso: string = require('@/assets/nespresso-logo.png')
   signinDialog: boolean = false
   signupDialog: boolean = false
-  authenticated: boolean = false
 
   mounted () {
-    this.auth.addListeners({tokensChanged: (tokens: any) => {
-      this.authenticated = !!tokens
+    this.auth.addListeners({tokensChanged: (tokens) => {
+      if (tokens && tokens.accessToken) {
+        this.setPayload(decode(tokens.accessToken) as Payload)
+      }
     }})
   }
 }

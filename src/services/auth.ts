@@ -4,10 +4,11 @@ import jwtDecode from 'jwt-decode'
 
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import DefaultTokenStorage from '../jwt-toolbox/auth/token-storage/default-token-storage'
-import { environment } from '@/environments/environment';
+import { environment } from '@/environments/environment'
+import store from '@/store'
 
 import axios from 'axios'
-import SymfonyLexikAdapter from '@/jwt-toolbox/auth/server-adapter/symfony-lexik-adapter';
+import SymfonyLexikAdapter from '@/jwt-toolbox/auth/server-adapter/symfony-lexik-adapter'
 const client = axios.create()
 
 export interface Payload {
@@ -71,7 +72,7 @@ const auth = new Auth<UsernamePasswordCredentials, AxiosRequestConfig, AxiosResp
 const listener = {
   tokensChanged: (tokens: Tokens) => {
     const payload = (tokens && tokens.accessToken) ? jwtDecode(tokens.accessToken) : undefined
-    console.log(payload)
+    store.commit('auth/setPayload', payload)
   },
   expired: () => {
     if (window.stop) {

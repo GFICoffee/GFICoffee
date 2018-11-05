@@ -43,8 +43,7 @@
 import { Vue, Component, Inject } from 'vue-property-decorator'
 import Connexion from '@/components/Connexion.vue'
 import Inscription from '@/components/Inscription.vue'
-import { IAuth, UsernamePasswordCredentials } from '@/jwt-toolbox/auth'
-import { decode } from 'jsonwebtoken'
+import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib/auth-toolbox'
 import { GetterAuth, Payload, StateAuth, MutationAuth } from '@/store/auth'
 
 
@@ -68,10 +67,8 @@ export default class Navigator extends Vue {
   signupDialog: boolean = false
 
   mounted () {
-    this.auth.addListeners({tokensChanged: (tokens) => {
-      if (tokens && tokens.accessToken) {
-        this.setPayload(decode(tokens.accessToken) as Payload)
-      }
+    this.auth.addListener({tokensChanged: (tokens) => {
+      this.setPayload(this.auth.decodeAccessToken() as Payload)
     }})
   }
 }

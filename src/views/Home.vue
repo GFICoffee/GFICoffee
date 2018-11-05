@@ -59,7 +59,7 @@
 import { Vue, Component, Inject } from 'vue-property-decorator';
 import CoffeeGrid from '@/components/CoffeeGrid.vue'
 import Coffee from '@/models/CoffeeInterface'
-import { IAuth, UsernamePasswordCredentials } from '../jwt-toolbox/auth';
+import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib/auth-toolbox';
 import { GetterAuth } from '../store/auth'
 
 @Component({

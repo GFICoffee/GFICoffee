@@ -48,12 +48,13 @@
 </template>
 <script lang="ts">
 import { Component, Inject, Vue } from 'vue-property-decorator'
-import { IAuth, UsernamePasswordCredentials } from '@/jwt-toolbox/auth'
+import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib/auth-toolbox'
+import { AxiosResponse } from 'axios'
 
 @Component
 export default class Connexion extends Vue {
   @Inject()
-  auth!: IAuth<UsernamePasswordCredentials, any>
+  auth!: IAuth<UsernamePasswordCredentials, AxiosResponse>
 
   invalidCredentials: boolean = false
   valid: boolean = false

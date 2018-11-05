@@ -1,14 +1,14 @@
-import Auth, { Tokens, UsernamePasswordCredentials } from '../jwt-toolbox/auth'
-import AxiosAdapter from '../jwt-toolbox/auth/client-adapter/axios-adapter'
-import jwtDecode from 'jwt-decode'
+import Auth, { Tokens, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib/auth-toolbox'
+import AxiosAdapter from 'auth-toolbox/dist/lib/client-adapter/axios-adapter'
 
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import DefaultTokenStorage from '../jwt-toolbox/auth/token-storage/default-token-storage'
+import DefaultTokenStorage from 'auth-toolbox/dist/lib/token-storage/default-token-storage'
 import { environment } from '@/environments/environment'
 import store from '@/store'
 
 import axios from 'axios'
-import SymfonyLexikAdapter from '@/jwt-toolbox/auth/server-adapter/symfony-lexik-adapter'
+import SymfonyLexikAdapter from './auth/symfony-lexik-adapter'
+import JwtTokenDecoder from 'auth-toolbox/dist/lib/token-decoder/jwt-token-decoder';
 const client = axios.create()
 
 export interface Payload {
@@ -61,17 +61,18 @@ export interface ResourceAccess {
   account: RealmAccess
 }
 
-const auth = new Auth<UsernamePasswordCredentials, AxiosRequestConfig, AxiosResponse>(
+
+
+const auth = new Auth<UsernamePasswordCredentials, AxiosResponse>(
   {loginEndpoint: {url: `${environment.apiBaseUrl}/login_check`, method: 'POST'}},
   new SymfonyLexikAdapter(),
   new AxiosAdapter(client),
-  new DefaultTokenStorage(window.sessionStorage),
-  new DefaultTokenStorage(window.localStorage)
+  new JwtTokenDecoder()
 )
 
 const listener = {
   tokensChanged: (tokens: Tokens) => {
-    const payload = (tokens && tokens.accessToken) ? jwtDecode(tokens.accessToken) : undefined
+    const payload = auth.decodeAccessToken()
     store.commit('auth/setPayload', payload)
   },
   expired: () => {
@@ -88,8 +89,8 @@ const listener = {
   }
 }
 
-auth.addListeners(listener)
-auth.init()
+auth.addListener(listener)
+auth.loadTokensFromStorage()
 
 export {
   client,

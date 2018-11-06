@@ -35,7 +35,6 @@ const auth = {
   mutations: {
     setPayload (state: AuthState, payload: Payload) {
       state.payload = payload
-      console.log('set payload')
     }
   }
 } as Module<AuthState, RootState>

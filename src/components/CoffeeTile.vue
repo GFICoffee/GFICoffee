@@ -45,7 +45,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Intensity from '@/components/Intensity.vue';
-import Coffee from '@/models/CoffeeInterface';
+import Coffee from '@/api/model/Coffee';
 
 @Component({
   components: {
@@ -53,15 +53,16 @@ import Coffee from '@/models/CoffeeInterface';
   }
 })
 export default class CoffeeTile extends Vue {
-  @Prop({ required: true })
-  value!: Coffee;
+  @Prop({ default: null })
+  value!: Coffee | null
 
   coffee: Coffee | null = null
 
-
   @Watch('value', { immediate: true })
   onValueChanged () {
-    this.coffee = this.value
+    if (this.value) {
+      this.coffee = this.value
+    }
   }
 
   get typeIcon (): string {

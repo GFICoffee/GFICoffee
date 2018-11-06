@@ -14,7 +14,14 @@
             <v-flex class="fragments-five coffee-name">Variations</v-flex>
           </v-layout>
         </v-flex>
-        <v-flex shrink v-for="(coffee, i) of coffeeList" :key="i">
+        <v-flex v-if="loadingList" style="min-height: 70vh">
+          <v-layout column justify-center fill-height>
+            <v-flex shrink class="text-xs-center">
+              <v-progress-circular indeterminate color="white" :size="50"/>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex shrink v-for="(coffee, i) of coffeeList" :key="i" v-else>
           <coffee-tile v-model="coffeeList[i]"/>
         </v-flex>
       </v-layout>
@@ -22,10 +29,11 @@
   </v-layout>
 </template>
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Vue, Component, Watch, Inject } from 'vue-property-decorator';
 import CoffeeTile from '@/components/CoffeeTile.vue'
-import Coffee from '@/models/CoffeeInterface'
+import Coffee from '@/api/model/Coffee'
 import filter from 'lodash/filter'
+import CoffeeResource from '@/api/Coffee'
 
 @Component({
   components: {
@@ -33,21 +41,11 @@ import filter from 'lodash/filter'
   }
 })
 export default class CoffeeGrid extends Vue {
-  coffeeList: Coffee[] = [
-    { img: require('@/assets/coffee/ristretto-intenso.png'), name: 'Ristretto Intenso', desc: 'Exceptionnelement intense et onctueux', intensity: 12, type: 'ristretto', unitPrice: 0.3 },
-    { img: require('@/assets/coffee/espresso-forte.png'), name: 'Espresso Forte', desc: 'Rond et équilibré', intensity: 7, type: 'espresso', unitPrice: 0.3 },
-    { img: require('@/assets/coffee/lungo-origin-guatemala.png'), name: 'Lungo Origin Guatemala', desc: 'Soyeux et affirmé', intensity: 6, type: 'lungo', unitPrice: 0.35 },
-    { img: require('@/assets/coffee/espresso-decaffeinato.png'), name: 'Espresso Decaffeinato', desc: 'Dense et puissant', intensity: 7, type: 'espresso', unitPrice: 0.3 },
-    { img: require('@/assets/coffee/espresso-vanilla.png'), name: 'Espresso Vanilla', desc: 'Aux arômes naturels de vanille', intensity: 7, type: 'espresso', unitPrice: 0.35 },
-    { img: require('@/assets/coffee/ristretto-origin-india.png'), name: 'Ristretto Origin India', desc: 'Intense et épicé', intensity: 10, type: 'ristretto', unitPrice: 0.35 },
-    { img: require('@/assets/coffee/espresso-leggero.png'), name: 'Espresso Leggero', desc: 'Léger et rafraîchissant', intensity: 6, type: 'espresso', unitPrice: 0.3 },
-    { img: require('@/assets/coffee/lungo-forte.png'), name: 'Lungo Forte', desc: 'Élégant et torréfié', intensity: 4, type: 'lungo', unitPrice: 0.3 },
-    { img: require('@/assets/coffee/lungo-decaffeinato.png'), name: 'Lungo Decaffeinato', desc: 'Equilibré et complexe', intensity: 4, type: 'espresso', unitPrice: 0.3 },
-    { img: require('@/assets/coffee/espresso-caramel.png'), name: 'Espresso Caramel', desc: 'Aux arômes naturels de caramel', intensity: 7, type: 'espresso', unitPrice: 0.35 },
-    { img: require('@/assets/coffee/ristretto.png'), name: 'Ristretto', desc: 'Intense et persistant', intensity: 9, type: 'ristretto', unitPrice: 0.3 },
-    { img: require('@/assets/coffee/espresso-origin-brazil.png'), name: 'Espresso Origin Brazil', desc: 'Doux et satiné', intensity: 4, type: 'espresso', unitPrice: 0.35 },
-    { img: require('@/assets/coffee/lungo-leggero.png'), name: 'Lungo Leggero', desc: 'Fleuri et Rafraîchissant', intensity: 2, type: 'lungo', unitPrice: 0.3 }
-  ]
+  @Inject()
+  coffeeResource!: CoffeeResource
+
+  coffeeList: Coffee[] = []
+  loadingList: boolean = false
 
   get selectedCoffee (): Coffee[] {
     return filter(this.coffeeList, ['selected', true])
@@ -56,6 +54,17 @@ export default class CoffeeGrid extends Vue {
   @Watch('selectedCoffee')
   onCoffeeListChanged () {
     this.$emit('input', this.selectedCoffee)
+  }
+
+  async created () {
+    this.loadingList = true
+    try {
+      this.coffeeList = await this.coffeeResource.getCoffeeList()
+    } catch (e) {
+      console.error(e)
+    } finally {
+      this.loadingList = false
+    }
   }
 }
 </script>

@@ -8,7 +8,7 @@
 import { Vue, Component, Inject } from 'vue-property-decorator';
 import CoffeeGrid from '@/components/CoffeeGrid.vue'
 import Calculator from '@/components/Calculator.vue'
-import Coffee from '@/models/CoffeeInterface'
+import Coffee from '@/api/model/coffee'
 import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib/auth-toolbox';
 import { GetterAuth } from '@/store/auth'
 

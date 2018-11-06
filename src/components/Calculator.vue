@@ -6,7 +6,7 @@
           <v-layout>
             <v-flex>
               <h2 class="white--text">{{ coffee.name }}</h2>
-              <h6 class="white--text">{{ coffee.unitPrice.toFixed(2) }}&nbsp;€ / unité</h6>
+              <h6 class="white--text">{{ coffee.unit_price.toFixed(2) }}&nbsp;€ / unité</h6>
             </v-flex>
             <v-flex shrink>
               <v-select
@@ -18,6 +18,7 @@
                   hide-details
                   type="number"
                   v-model="coffee.quantity30"
+                  clearable
               />
             </v-flex>
             <v-flex shrink>
@@ -30,6 +31,7 @@
                   hide-details
                   type="number"
                   v-model="coffee.quantity50"
+                  clearable
               />
             </v-flex>
             <v-flex shrink>
@@ -51,7 +53,20 @@
         <v-flex>
           <v-layout justify-end>
             <v-flex shrink>
-              <v-btn ouline dark>Commander</v-btn>
+              <v-btn ouline dark @click="confirmDialog = true" :disabled="!canOrder">Commander</v-btn>
+              <v-dialog v-model="confirmDialog" width="500">
+                <v-card color="secondary lighten-1 pb-2 px-3">
+                  <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
+                  <v-flex class="white--text">
+                    Êtes-vous sûr de vouloir passer cette commande ?
+                  </v-flex>
+                  <v-card-actions>
+                    <v-spacer/>
+                    <v-btn flat dark @click="confirmDialog = false">Non</v-btn>
+                    <v-btn outline dark @click="order()" :loading="orderLoading">Oui</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -61,7 +76,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import Coffee from '@/models/CoffeeInterface'
+import Coffee from '@/api/model/coffee'
 
 @Component
 export default class Calculator extends Vue {
@@ -70,16 +85,18 @@ export default class Calculator extends Vue {
 
   selectedCoffee: Coffee[] = []
   quantities: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  confirmDialog: boolean = false
+  orderLoading: boolean = false
 
   coffePrice (coffee: Coffee): number {
     let total: number = 0
 
-    if (coffee.quantity30) {
-      total += coffee.unitPrice * ( typeof coffee.quantity30 === 'string' ? parseFloat(coffee.quantity30) : coffee.quantity30) * 30
+    if (coffee.quantity30 && coffee.unit_price) {
+      total += coffee.unit_price * ( typeof coffee.quantity30 === 'string' ? parseFloat(coffee.quantity30) : coffee.quantity30) * 30
     }
 
-    if (coffee.quantity50) {
-      total += coffee.unitPrice * ( typeof coffee.quantity50 === 'string' ? parseFloat(coffee.quantity50) : coffee.quantity50) * 30
+    if (coffee.quantity50 && coffee.unit_price) {
+      total += coffee.unit_price * ( typeof coffee.quantity50 === 'string' ? parseFloat(coffee.quantity50) : coffee.quantity50) * 30
     }
     return total
   }
@@ -91,6 +108,38 @@ export default class Calculator extends Vue {
       total += this.coffePrice(coffee)
     }
     return total
+  }
+
+  get canOrder (): boolean {
+    let canOrder: boolean = true
+
+    if (this.selectedCoffee.length === 0) {
+      canOrder = false
+    } else {
+      for (let coffee of this.selectedCoffee) {
+        if (!coffee.quantity30 && !coffee.quantity50) {
+          canOrder = false
+          break
+        }
+      }
+    }
+    return canOrder
+  }
+
+  async order () {
+    this.orderLoading = true
+    try {
+
+    } catch (e) {
+      console.error(e)
+    } finally {
+      this.orderLoading = false
+      this.confirmDialog = false
+      for (const coffee of this.selectedCoffee) {
+        coffee.selected = false
+      }
+      this.$emit('input', [])
+    }
   }
 
   @Watch('value', { immediate: true })

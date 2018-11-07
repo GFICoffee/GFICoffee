@@ -75,11 +75,16 @@
   </v-layout>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch, Inject } from 'vue-property-decorator';
 import Coffee from '@/api/model/coffee'
+import OrderResource from '@/api/Order'
+import OrderDto from '@/api/model/OrderDto'
 
 @Component
 export default class Calculator extends Vue {
+  @Inject()
+  orderResource!: OrderResource
+
   @Prop({ type: Array, default: () => [] })
   value!: Coffee[]
 
@@ -129,7 +134,10 @@ export default class Calculator extends Vue {
   async order () {
     this.orderLoading = true
     try {
-
+      const order: OrderDto = {
+        items: this.selectedCoffee
+      }
+      await this.orderResource.order(order)
     } catch (e) {
       console.error(e)
     } finally {

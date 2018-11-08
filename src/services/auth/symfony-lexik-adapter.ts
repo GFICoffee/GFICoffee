@@ -3,25 +3,26 @@ import {
   Response,
   ServerAdapter,
   ServerEndpoint,
+  Token,
   Tokens,
   UsernamePasswordCredentials
-} from 'auth-toolbox'
+} from 'auth-toolbox';
 
 export interface LoginResponse {
   token: string,
 }
 
-export default class SymfonyLexikAdapter implements ServerAdapter<UsernamePasswordCredentials> {
+export default class SymfonyLexikAdapter implements ServerAdapter {
   asLoginRequest (loginEndpoint: ServerEndpoint, credentials: UsernamePasswordCredentials): Request {
     const data = credentials
     return { ...loginEndpoint, data }
   }
 
-  asLogoutRequest (logoutEndpoint: ServerEndpoint, tokens: Tokens): Request {
+  asLogoutRequest (logoutEndpoint: ServerEndpoint, refreshToken: Token): Request {
     throw Error('Not implemented')
   }
 
-  asRenewRequest (renewEndpoint: ServerEndpoint, tokens: Tokens): Request {
+  asRenewRequest (renewEndpoint: ServerEndpoint, refreshToken: Token): Request {
     throw Error('Not implemented')
   }
 

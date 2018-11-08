@@ -8,4 +8,9 @@ export default class OrderResource extends AbstractResource {
     let path = `${environment.apiBaseUrl}/order`
     return this.wrapPromise(services.axios.post(path, order)) as Promise<any & AxiosResponseExt>
   }
+
+  getWaitingOrders (): Promise<OrderDto[] & AxiosResponseExt> {
+  let path = `${environment.apiBaseUrl}/orders/waiting`
+  return this.wrapPromise(services.axios.get(path)) as Promise<OrderDto[] & AxiosResponseExt>
+}
 }

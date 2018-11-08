@@ -1,15 +1,13 @@
-import Auth, { Tokens, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib/auth-toolbox'
+import Auth, { Tokens } from 'auth-toolbox/dist/lib'
 import AxiosAdapter from 'auth-toolbox/dist/lib/client-adapter/axios-adapter'
 
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import DefaultTokenStorage from 'auth-toolbox/dist/lib/token-storage/default-token-storage'
 import { environment } from '@/environments/environment'
 import store from '@/store'
 
 import axios from 'axios'
 import SymfonyLexikAdapter from './auth/symfony-lexik-adapter'
 import JwtTokenDecoder from 'auth-toolbox/dist/lib/token-decoder/jwt-token-decoder';
-const client = axios.create()
+const client = axios.create({baseURL: environment.apiBaseUrl})
 
 export interface Payload {
   jti: string,
@@ -62,16 +60,20 @@ export interface ResourceAccess {
 }
 
 
-
-const auth = new Auth<UsernamePasswordCredentials, AxiosResponse>(
-  {loginEndpoint: {url: `${environment.apiBaseUrl}/login_check`, method: 'POST'}},
+const auth = new Auth(
+  {loginEndpoint: {url: `login_check`, method: 'POST'}},
   new SymfonyLexikAdapter(),
   new AxiosAdapter(client),
-  new JwtTokenDecoder()
+  {
+    accessTokenDecoder: new JwtTokenDecoder()
+  }
 )
 
-const listener = {
-  tokensChanged: (tokens: Tokens) => {
+const payload = auth.decodeAccessToken()
+store.commit('auth/setPayload', payload)
+
+auth.addListener({
+  tokensChanged: () => {
     const payload = auth.decodeAccessToken()
     store.commit('auth/setPayload', payload)
   },
@@ -87,10 +89,9 @@ const listener = {
     }
     console.log('logout')
   }
-}
+})
 
-auth.addListener(listener)
-auth.loadTokensFromStorage()
+auth.usePersistentStorage = true
 
 export {
   client,

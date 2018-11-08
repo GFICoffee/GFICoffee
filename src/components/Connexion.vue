@@ -1,6 +1,6 @@
 <template>
   <v-card color="secondary lighten-1 pb-2 px-3">
-    <v-card-title class="headline white--text pl-0">Se connecter</v-card-title>
+    <v-card-title class="headline white--text">Se connecter</v-card-title>
     <v-flex>
       <v-form ref="form" v-model="valid">
         <v-layout column>
@@ -48,7 +48,7 @@
 </template>
 <script lang="ts">
 import { Component, Inject, Vue } from 'vue-property-decorator'
-import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib/auth-toolbox'
+import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib'
 import { AxiosResponse } from 'axios'
 
 @Component
@@ -73,7 +73,7 @@ export default class Connexion extends Vue {
     if ((this as any).$refs.form.validate()) {
       this.loading = true
       try {
-        await this.auth.login({ username: this.credentials.email, password: this.credentials.password }, true)
+        await this.auth.login({ username: this.credentials.email, password: this.credentials.password })
         this.$emit('close')
       } catch (e) {
         this.invalidCredentials = true

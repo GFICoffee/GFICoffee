@@ -1,6 +1,6 @@
 <template>
   <v-card color="secondary lighten-1 pb-2 px-3">
-    <v-card-title class="headline white--text pl-0">S'inscrire</v-card-title>
+    <v-card-title class="headline white--text">S'inscrire</v-card-title>
     <v-flex>
       <v-form ref="form" v-model="valid">
         <v-layout column>

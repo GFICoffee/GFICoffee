@@ -5,43 +5,7 @@
       <v-layout column>
         <v-flex class="user-waiting-orders">
           <h3 class="white--text thin mb-2">Mes commandes en cours</h3>
-          <v-data-table
-              :items="waitingOrders"
-              hide-actions
-              class="elevation-1"
-              dark
-              :loading="waitingOrdersLoading"
-              :no-data-text="waitingOrdersLoading ? 'Chargement de vos commandes' : 'Aucune commande en cours'"
-          >
-            <template slot="headers" slot-scope="props"></template>
-            <v-progress-linear slot="progress" color="white" indeterminate/>
-            <template slot="items" slot-scope="props">
-              <tr @click="props.expanded = !props.expanded" class="pointer">
-                <td>Commande #{{ props.item.id }}</td>
-              </tr>
-            </template>
-
-            <template slot="expand" slot-scope="props">
-              <v-card flat>
-                <v-data-table
-                    :items="props.item.items"
-                    hide-actions
-                    :headers="subheaders"
-                    dark
-                >
-                  <template slot="items" slot-scope="subprops">
-                    <tr @click="props.expanded = !props.expanded">
-                      <td>{{ subprops.item.name }}</td>
-                      <td>{{ subprops.item.quantity30 }}</td>
-                      <td>{{ subprops.item.quantity50 }}</td>
-                      <td>{{ subprops.item.unit_price }} €</td>
-                      <td>{{ calcTotalPrice(subprops.item) }} €</td>
-                    </tr>
-                  </template>
-                </v-data-table>
-              </v-card>
-            </template>
-          </v-data-table>
+          <orders-table :value="waitingOrders" :loading="waitingOrdersLoading"/>
         </v-flex>
       </v-layout>
     </v-flex>
@@ -55,12 +19,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Inject, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Inject, Prop, Vue, Watch } from 'vue-property-decorator'
+import OrdersTable from '@/components/OrdersTable.vue'
 import OrderDto from '@/api/model/OrderDto'
 import OrderResource from '@/api/Order'
 import Coffee from '@/api/model/Coffee'
 
-@Component
+@Component({
+  components: {
+    OrdersTable
+  }
+})
 export default class Account extends Vue {
   @Inject()
   orderResource!: OrderResource

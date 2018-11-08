@@ -63,8 +63,8 @@ export default class OrdersTable extends Vue {
 
   calcTotalPrice (item: Coffee): string {
     if (item.unit_price) {
-      const quantity30: number = parseInt(`${item.quantity30}`)
-      const quantity50: number = parseInt(`${item.quantity50}`)
+      const quantity30: number = parseInt(`${item.quantity30 || 0}`)
+      const quantity50: number = parseInt(`${item.quantity50 || 0}`)
       return (((30 * quantity30) + (50 * quantity50)) * item.unit_price).toFixed(2)
     }
     return ''

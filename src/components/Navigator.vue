@@ -54,10 +54,10 @@
 
     <v-dialog
         v-model="accountDialog"
-        width="500"
+        width="700"
         :fullscreen="$vuetify.breakpoint.smAndDown"
     >
-      <account @close="accountDialog = false"/>
+      <account @close="accountDialog = false" :dialog-status="accountDialog"/>
     </v-dialog>
   </v-layout>
 </template>

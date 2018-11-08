@@ -19,7 +19,19 @@
             <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="signupDialog = true">Inscription</v-flex>
             </template>
             <template v-else>
-              <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="auth.logout()">Déconnexion</v-flex>
+              <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="">
+                <v-menu offset-y transition="slide-y-transition">
+                  <div slot="activator">{{ username }}</div>
+                  <v-list>
+                    <v-list-tile class="subheading text-uppercase text-xs-center" @click="">
+                      Mon compte
+                    </v-list-tile>
+                    <v-list-tile class="subheading text-uppercase text-xs-center" @click="auth.logout()">
+                      Déconnexion
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+              </v-flex>
             </template>
           </v-layout>
         </v-flex>
@@ -58,6 +70,8 @@ export default class Navigator extends Vue {
   auth!: IAuth<UsernamePasswordCredentials, any>
   @GetterAuth
   authenticated!: boolean
+  @GetterAuth
+  payload!: Payload
   @MutationAuth
   setPayload!: (payload: Payload) => void
 
@@ -65,6 +79,13 @@ export default class Navigator extends Vue {
   logoNespresso: string = require('@/assets/nespresso-logo.png')
   signinDialog: boolean = false
   signupDialog: boolean = false
+
+  get username (): string {
+    if (this.payload.username) {
+      return this.payload.username.split('@')[0].split('.').join(' ')
+    }
+    return ''
+  }
 
   mounted () {
     this.auth.addListener({tokensChanged: (tokens) => {

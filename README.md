@@ -1,6 +1,7 @@
-# gficoffee
+# GFI Coffee
 
-> A Vue.js project
+> GFI Coffee is a simple web application made with VueJS.  
+> This app aims to make Nespresso Pro coffee capsules orders easier at GFI.
 
 ## Build Setup
 
@@ -13,15 +14,9 @@ npm run dev
 
 # build for production with minification
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://toilal.github.io/vue-webpack-template/).
+## Backend
+
+This repository only contains the frontend part of the app.  
+It uses a Rest API made with Symfony: [GFI Coffee Backend](https://github.com/GFICoffee/GFICoffee-Backend).

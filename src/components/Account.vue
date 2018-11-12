@@ -16,13 +16,13 @@
             <v-spacer/>
             <v-flex shrink>
               <v-tooltip top>
-                <v-icon color="white" slot="activator" @click="exportAllWaitingOrders()" :disabled="allWaitingOrdersLoading">mdi-file-export</v-icon>
+                <v-icon color="white" slot="activator" @click="exportAllWaitingOrders()" :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-file-export</v-icon>
                 <span>Exporter</span>
               </v-tooltip>
             </v-flex>
             <v-flex shrink class="ml-3">
               <v-tooltip top>
-                <v-icon color="white" slot="activator" @click="validateAllWaitingOrders()" :disabled="allWaitingOrdersLoading">mdi-checkbox-multiple-marked</v-icon>
+                <v-icon color="white" slot="activator" @click="validateOrdersDialog = true" :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-checkbox-multiple-marked</v-icon>
                 <span>Valider toutes les commandes</span>
               </v-tooltip>
             </v-flex>
@@ -38,6 +38,19 @@
         Fermer
       </v-btn>
     </v-card-actions>
+    <v-dialog v-model="validateOrdersDialog" width="500">
+      <v-card color="secondary lighten-1 pb-2 px-3">
+        <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
+        <v-flex class="white--text">
+          Êtes-vous sûr de vouloir valider toutes les commandes en attente ?
+        </v-flex>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn flat @click="validateOrdersDialog = false">Non</v-btn>
+          <v-btn outline @click="validateAllWaitingOrders()" :loading="validateOrdersLoading">Oui</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -67,6 +80,9 @@ export default class Account extends Vue {
   allWaitingOrders: OrderDto[] = []
   waitingOrdersLoading: boolean = false
   allWaitingOrdersLoading: boolean = false
+
+  validateOrdersDialog: boolean = false
+  validateOrdersLoading: boolean = false
 
   get subheaders () {
     return [
@@ -106,7 +122,7 @@ export default class Account extends Vue {
     this.waitingOrdersLoading = true
     this.allWaitingOrdersLoading = true
     try {
-      await this.orderResource.deleteOrderAction(id)
+      await this.orderResource.deleteOrder(id)
       this.removeOrderFromList(id, this.waitingOrders)
       if (this.isAdmin) {
         this.removeOrderFromList(id, this.allWaitingOrders)
@@ -124,7 +140,17 @@ export default class Account extends Vue {
   }
 
   async validateAllWaitingOrders () {
-    console.log('validate')
+    this.validateOrdersLoading = true
+    try {
+      await this.orderResource.validateAllWaitingOrders()
+      this.allWaitingOrders = []
+      this.waitingOrders = []
+      this.validateOrdersDialog = false
+    } catch (e) {
+      console.error(e)
+    } finally {
+      this.validateOrdersLoading = false
+    }
   }
 
   @Watch('dialogStatus', { immediate: true })

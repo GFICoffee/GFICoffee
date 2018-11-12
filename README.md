@@ -1,3 +1,5 @@
+![MIT Licence](https://img.shields.io/badge/licence-GPL-green.svg)
+
 # GFI Coffee
 
 > GFI Coffee is a simple web application made with VueJS.  

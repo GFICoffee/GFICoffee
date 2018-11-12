@@ -20,6 +20,12 @@
                 <span>Exporter</span>
               </v-tooltip>
             </v-flex>
+            <v-flex shrink class="ml-3">
+              <v-tooltip top>
+                <v-icon color="white" slot="activator" @click="validateAllWaitingOrders()" :disabled="allWaitingOrdersLoading">mdi-checkbox-multiple-marked</v-icon>
+                <span>Valider toutes les commandes</span>
+              </v-tooltip>
+            </v-flex>
           </v-layout>
 
           <orders-table :value="allWaitingOrders" :loading="allWaitingOrdersLoading" @delete="deleteOrder"/>
@@ -115,6 +121,10 @@ export default class Account extends Vue {
 
   async exportAllWaitingOrders () {
     console.log('Export')
+  }
+
+  async validateAllWaitingOrders () {
+    console.log('validate')
   }
 
   @Watch('dialogStatus', { immediate: true })

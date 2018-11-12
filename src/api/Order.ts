@@ -18,4 +18,9 @@ export default class OrderResource extends AbstractResource {
     let path = `${environment.apiBaseUrl}/orders/waiting-all`
     return this.wrapPromise(services.axios.get(path)) as Promise<OrderDto[] & AxiosResponseExt>
   }
+
+  deleteOrderAction (id: string | number): Promise<OrderDto[] & AxiosResponseExt> {
+    let path = `${environment.apiBaseUrl}/orders/${id}`
+    return this.wrapPromise(services.axios.delete(path)) as Promise<OrderDto[] & AxiosResponseExt>
+  }
 }

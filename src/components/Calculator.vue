@@ -11,7 +11,6 @@
             <v-flex shrink>
               <v-select
                   :items="quantities"
-                  dark
                   class="quantity-field mr-3"
                   label="Quantité (x30)"
                   color="white"
@@ -24,7 +23,6 @@
             <v-flex shrink>
               <v-select
                   :items="quantities"
-                  dark
                   class="quantity-field mr-3"
                   label="Quantité (x50)"
                   color="white"
@@ -53,7 +51,7 @@
         <v-flex>
           <v-layout justify-end>
             <v-flex shrink>
-              <v-btn ouline dark @click="confirmDialog = true" :disabled="!canOrder">Commander</v-btn>
+              <v-btn ouline @click="confirmDialog = true" :disabled="!canOrder">Commander</v-btn>
               <v-dialog v-model="confirmDialog" width="500">
                 <v-card color="secondary lighten-1 pb-2 px-3">
                   <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
@@ -62,8 +60,8 @@
                   </v-flex>
                   <v-card-actions>
                     <v-spacer/>
-                    <v-btn flat dark @click="confirmDialog = false">Non</v-btn>
-                    <v-btn outline dark @click="order()" :loading="orderLoading">Oui</v-btn>
+                    <v-btn flat @click="confirmDialog = false">Non</v-btn>
+                    <v-btn outline @click="order()" :loading="orderLoading">Oui</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>

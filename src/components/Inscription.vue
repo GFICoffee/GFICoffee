@@ -14,7 +14,6 @@
                 :rules="emailRules"
                 :required="true"
                 color="white"
-                dark
             />
           </v-flex>
           <v-flex shrink>
@@ -26,7 +25,6 @@
                 :append-icon="showPassword ? 'visibility_off' : 'visibility'"
                 :type="showPassword ? 'text' : 'password'"
                 color="white"
-                dark
                 @click:append="showPassword = !showPassword"
             />
           </v-flex>
@@ -39,7 +37,6 @@
                 :append-icon="showPasswordConfirm ? 'visibility_off' : 'visibility'"
                 :type="showPasswordConfirm ? 'text' : 'password'"
                 color="white"
-                dark
                 @click:append="showPasswordConfirm = !showPasswordConfirm"
             />
           </v-flex>
@@ -49,7 +46,6 @@
     <v-card-actions>
       <v-spacer/>
       <v-btn outline
-             dark
              :disabled="!valid"
              :loading="loading"
              @click="submit"

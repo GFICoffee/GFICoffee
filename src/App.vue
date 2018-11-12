@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" class="secondary">
+  <v-app id="app" class="secondary" dark>
     <v-layout column wrap>
       <v-flex shrink>
         <navigator/>

@@ -1,4 +1,5 @@
 ![MIT Licence](https://img.shields.io/badge/licence-GPL-green.svg)
+![Version](https://img.shields.io/badge/version-0.1-green.svg)
 
 # GFI Coffee
 

@@ -60,7 +60,10 @@ import OrdersTable from '@/components/OrdersTable.vue'
 import OrderDto from '@/api/model/OrderDto'
 import OrderResource from '@/api/Order'
 import Coffee from '@/api/model/Coffee'
-import { GetterAuth, Payload } from '@/store/auth';
+import { GetterAuth, Payload } from '@/store/auth'
+import { environment } from '@/environments/environment.ts'
+import { AxiosResponse } from 'axios'
+import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox'
 
 @Component({
   components: {
@@ -68,6 +71,8 @@ import { GetterAuth, Payload } from '@/store/auth';
   }
 })
 export default class Account extends Vue {
+  @Inject()
+  auth!: IAuth<UsernamePasswordCredentials, AxiosResponse>;
   @GetterAuth
   payload!: Payload
   @Inject()
@@ -136,7 +141,7 @@ export default class Account extends Vue {
   }
 
   async exportAllWaitingOrders () {
-    console.log('Export')
+    window.location.href = `${environment.apiBaseUrl}/orders/waiting-all/export?bearer=${this.auth.getTokens() ? this.auth.getTokens().access.value : ''}`
   }
 
   async validateAllWaitingOrders () {

@@ -15,8 +15,7 @@
         <v-flex shrink>
           <v-layout column justify-center fill-height class="white--text">
             <template v-if="!authenticated">
-            <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="signinDialog = true">Connexion</v-flex>
-            <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="signupDialog = true">Inscription</v-flex>
+            <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="login()">Connexion</v-flex>
             </template>
             <template v-else>
               <v-flex shrink class="subheading text-uppercase text-xs-center pointer">
@@ -38,21 +37,6 @@
       </v-layout>
     </v-flex>
     <v-dialog
-        v-model="signinDialog"
-        width="500"
-        :fullscreen="$vuetify.breakpoint.smAndDown"
-    >
-      <connexion @close="signinDialog = false"/>
-    </v-dialog>
-    <v-dialog
-        v-model="signupDialog"
-        width="500"
-        :fullscreen="$vuetify.breakpoint.smAndDown"
-    >
-      <inscription @close="signupDialog = false"/>
-    </v-dialog>
-
-    <v-dialog
         v-model="accountDialog"
         width="700"
         :fullscreen="$vuetify.breakpoint.smAndDown"
@@ -63,17 +47,14 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Inject } from 'vue-property-decorator'
-import Connexion from '@/components/Connexion.vue'
-import Inscription from '@/components/Inscription.vue'
 import Account from '@/components/Account.vue'
 import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib'
 import { GetterAuth, Payload, StateAuth, MutationAuth } from '@/store/auth'
+import { environment } from '../environments/environment'
 
 
 @Component({
   components: {
-    Connexion,
-    Inscription,
     Account
   }
 })
@@ -90,7 +71,6 @@ export default class Navigator extends Vue {
   logo: string = require('@/assets/logo.png')
   logoNespresso: string = require('@/assets/nespresso-logo.png')
   signinDialog: boolean = false
-  signupDialog: boolean = false
   accountDialog: boolean = false
 
   get username (): string {
@@ -104,6 +84,10 @@ export default class Navigator extends Vue {
     this.auth.addListener({tokensChanged: (tokens) => {
       this.setPayload(this.auth.decodeAccessToken() as Payload)
     }})
+  }
+
+  login () {
+    window.location.href = `${environment.apiBaseUrl}/login`
   }
 }
 </script>

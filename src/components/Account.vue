@@ -100,7 +100,10 @@ export default class Account extends Vue {
   }
 
   get isAdmin (): boolean {
-    return this.payload.roles.indexOf('ROLE_ADMIN') >= 0
+    if (this.payload) {
+      return this.payload.roles.indexOf('ROLE_ADMIN') >= 0
+    }
+    return false
   }
 
   calcTotalPrice (item: Coffee): string {

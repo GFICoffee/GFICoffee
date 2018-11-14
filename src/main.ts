@@ -13,6 +13,17 @@ import store from './store'
 import App from './App.vue'
 import router from './router'
 
+const urlParams = new URLSearchParams(window.location.search)
+const token = urlParams.get('token')
+
+if (token) {
+  if (history.pushState) {
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    window.history.pushState({ path: newurl }, '', newurl);
+  }
+  services.auth.setTokens({ access: { value: token } })
+}
+
 Vue.config.productionTip = false
 Vue.use(Vuetify, {
   theme: {

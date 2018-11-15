@@ -1,0 +1,23 @@
+{
+  "*": {
+    "promptValues": {
+      "projectName": "gficoffee",
+      "authorName": "Victor Castro-Cintas",
+      "authorEmail": "victor.castro.cintas@gmail.com",
+      "portPrefix": 469,
+      "webContainer": true,
+      "phpVersion": "7.2",
+      "dbContainer": true,
+      "dbImage": "mysql",
+      "mysqlVersion": "5.7",
+      "nodeContainer": true,
+      "mailcatcherContainer": true,
+      "phingContainer": false,
+      "nodeSassContainer": false,
+      "mapserverContainer": false,
+      "mavenContainer": false,
+      "sonarScannerContainer": false,
+      "drupalInit": false
+    }
+  }
+}

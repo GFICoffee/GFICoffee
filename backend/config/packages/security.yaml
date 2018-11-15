@@ -15,15 +15,15 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         coffee_list:
-            pattern:  ^/api/coffee/list
+            pattern:  ^/coffee/list
             stateless: true
             anonymous: true
         register:
-            pattern:  ^/api/register
+            pattern:  ^/register
             stateless: true
             anonymous: true
         login:
-            pattern:  ^/api/(login|authorize)
+            pattern:  ^/(login|authorize)
             stateless: true
             anonymous: true
         api:
@@ -44,9 +44,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/(login|authorize), role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/coffee/list, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/(login|authorize), role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/coffee/list, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, role: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

@@ -74,7 +74,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Watch, Inject } from 'vue-property-decorator';
-import Coffee from '@/api/model/coffee'
+import Coffee from '@/api/model/Coffee'
 import OrderResource from '@/api/Order'
 import OrderDto from '@/api/model/OrderDto'
 

@@ -42,7 +42,7 @@ class OrdersController extends AbstractController
      * Crée une nouvelle commande.
      *
      * @View()
-     * @Post("/api/order")
+     * @Post("/order")
      *
      * @ParamConverter("data", converter="fos_rest.request_body")
      *
@@ -77,7 +77,7 @@ class OrdersController extends AbstractController
      * Récupère toutes les commandes en attente de l'utilisateur courant.
      *
      * @View()
-     * @Get("/api/orders/waiting")
+     * @Get("/orders/waiting")
      *
      * @param Request $request
      * @param UserInterface $user
@@ -100,7 +100,7 @@ class OrdersController extends AbstractController
      * Récupère toutes les commandes en attente.
      *
      * @View()
-     * @Get("/api/orders/waiting-all")
+     * @Get("/orders/waiting-all")
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
@@ -123,7 +123,7 @@ class OrdersController extends AbstractController
      * Supprime une commande.
      *
      * @View()
-     * @Delete("/api/orders/{id}", requirements={"id"="\d+"})
+     * @Delete("/orders/{id}", requirements={"id"="\d+"})
      *
      * @param Request $request
      * @param UserInterface $user
@@ -152,7 +152,7 @@ class OrdersController extends AbstractController
      * Valide toutes les commandes en attente.
      *
      * @View()
-     * @Post("/api/orders/waiting-all/validate")
+     * @Post("/orders/waiting-all/validate")
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
@@ -185,7 +185,7 @@ class OrdersController extends AbstractController
      * Exporte toutes les commandes en attente au format CSV.
      *
      * @View()
-     * @Get("/api/orders/waiting-all/export")
+     * @Get("/orders/waiting-all/export")
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request

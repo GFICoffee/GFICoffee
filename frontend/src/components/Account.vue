@@ -72,7 +72,7 @@ import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox'
 })
 export default class Account extends Vue {
   @Inject()
-  auth!: IAuth<UsernamePasswordCredentials, AxiosResponse>;
+  auth!: IAuth<UsernamePasswordCredentials, AxiosResponse>
   @GetterAuth
   payload!: Payload
   @Inject()
@@ -144,7 +144,13 @@ export default class Account extends Vue {
   }
 
   async exportAllWaitingOrders () {
-    window.location.href = `${environment.apiBaseUrl}/orders/waiting-all/export?bearer=${this.auth.getTokens() ? this.auth.getTokens().access.value : ''}`
+    const tokens = this.auth.getTokens()
+    const token = tokens ? tokens.access.value : undefined
+    if (token) {
+      window.location.href = `${environment.apiBaseUrl}/orders/waiting-all/export?bearer=${token}`
+    } else {
+      window.location.href = `${environment.apiBaseUrl}/orders/waiting-all/export`
+    }
   }
 
   async validateAllWaitingOrders () {

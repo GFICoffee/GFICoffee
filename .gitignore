@@ -1,16 +1,9 @@
-.DS_Store
-node_modules/
-/dist/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-/test/e2e/reports/
-selenium-debug.log
-
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
+/docker-compose.override.yml
+/.docker/mailcatcher/ssmtp.conf
+/.docker/.ca-certificates
+/.docker/**/Dockerfile
+/.init/
+/.bash_enter.env
+/frontend/src/environments/*
+!/frontend/src/environments/*.mo.*
+/frontend/vue.config.settings.default.js

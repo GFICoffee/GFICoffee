@@ -1,17 +1,19 @@
 import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@mdi/font/css/materialdesignicons.min.css'
 import fr from 'vuetify/src/locale/fr'
-import './hooks' // This must be imported before any component
 import './styles/fonts.css'
 import './styles/global.css'
 import services from './services'
-import store from './store'
+import './registerServiceWorker'
 
-import App from './App.vue'
-import router from './router'
+Vue.config.productionTip = false;
+
 
 const urlParams = new URLSearchParams(window.location.search)
 const token = urlParams.get('token')
@@ -34,9 +36,9 @@ Vue.use(Vuetify, {
     locales: { fr },
     current: 'fr'
   }
-})
+});
 
-Vue.prototype.$utils = {
+(Vue as any).prototype.$utils = {
   console: console
 }
 

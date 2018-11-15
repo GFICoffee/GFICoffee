@@ -56,7 +56,7 @@ class MainController extends AbstractController
      * Obtient la liste des cafés
      *
      * @View()
-     * @Get("/api/coffee/list")
+     * @Get("/coffee/list")
      *
      * @return Coffee[]
      */
@@ -69,7 +69,7 @@ class MainController extends AbstractController
 
     /**
      * @View()
-     * @Get("/api/login")
+     * @Get("/login")
      *
      * @return RedirectResponse
      */
@@ -80,7 +80,7 @@ class MainController extends AbstractController
 
     /**
      * @View()
-     * @Get("/api/authorize")
+     * @Get("/authorize")
      *
      * @return string
      */

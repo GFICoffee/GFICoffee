@@ -48,7 +48,7 @@
 <script lang="ts">
 import { Vue, Component, Inject } from 'vue-property-decorator'
 import Account from '@/components/Account.vue'
-import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox/dist/lib'
+import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox'
 import { GetterAuth, Payload, StateAuth, MutationAuth } from '@/store/auth'
 import { environment } from '../environments/environment'
 

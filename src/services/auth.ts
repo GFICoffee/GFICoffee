@@ -1,12 +1,10 @@
-import Auth, { Tokens } from 'auth-toolbox/dist/lib'
-import AxiosAdapter from 'auth-toolbox/dist/lib/client-adapter/axios-adapter'
+import { Auth, AxiosAdapter, JwtTokenDecoder } from 'auth-toolbox'
 
 import { environment } from '@/environments/environment'
 import store from '@/store'
 
 import axios from 'axios'
 import SymfonyLexikAdapter from './auth/symfony-lexik-adapter'
-import JwtTokenDecoder from 'auth-toolbox/dist/lib/token-decoder/jwt-token-decoder';
 const client = axios.create({baseURL: environment.apiBaseUrl})
 
 export interface Payload {
@@ -65,7 +63,11 @@ const auth = new Auth(
   new SymfonyLexikAdapter(),
   new AxiosAdapter(client),
   {
-    accessTokenDecoder: new JwtTokenDecoder()
+    accessTokenDecoder: new JwtTokenDecoder(NaN),
+    excludes: [
+      `${environment.apiBaseUrl}/login`,
+      `${environment.apiBaseUrl}/coffee/list`,
+    ]
   }
 )
 

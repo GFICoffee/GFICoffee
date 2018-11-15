@@ -6,7 +6,9 @@
 > GFI Coffee is a simple web application made with VueJS.  
 > This app aims to make Nespresso Pro coffee capsules orders easier at GFI.
 
-## Build Setup
+## Frontend
+
+### Build Setup
 
 ``` bash
 # install dependencies
@@ -21,5 +23,31 @@ npm run build
 
 ## Backend
 
-This repository only contains the frontend part of the app.  
-It uses a Rest API made with Symfony: [GFI Coffee Backend](https://github.com/GFICoffee/GFICoffee-Backend).
+### Build Setup
+
+``` bash
+# install dependencies
+composer install
+
+# build MySQL database from entities
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:create
+
+# update database structure
+php bin/console doctrine:schema:update --force
+
+# Load fixtures
+php bin/console doctrine:fixtures:load
+
+# serve API at localhost:3000
+php bin/console server:run
+```
+
+### Environnement de développement
+
+Générer les clés
+
+``` bash
+openssl genrsa -out config/jwt/private.pem 4096
+openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+```

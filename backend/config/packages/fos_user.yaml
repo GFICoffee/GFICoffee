@@ -1,0 +1,7 @@
+fos_user:
+  db_driver: orm
+  firewall_name: api
+  from_email:
+    address: 'noreply@gficoffee.com'
+    sender_name: 'No Reply'
+  user_class: 'App\Entity\User'

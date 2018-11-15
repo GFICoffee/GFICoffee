@@ -1,7 +1,7 @@
 import services from '@/services'
-import { AbstractResource, AxiosResponseExt } from '@/api/index';
+import { AbstractResource, AxiosResponseExt } from '@/api/index'
 import { environment } from '@/environments/environment.ts'
-import Coffee from '@/api/model/Coffee';
+import Coffee from '@/api/model/Coffee'
 
 export default class CoffeeResource extends AbstractResource {
   getCoffeeList (): Promise<Coffee[] & AxiosResponseExt> {

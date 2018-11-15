@@ -15,22 +15,22 @@
   </v-layout>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class Intensity extends Vue {
   @Prop({ type: Number, default: 12 })
-  length!: number;
+  length!: number
 
   @Prop({ type: Number, default: 0 })
-  value!: number;
+  value!: number
 
   get range (): number[] {
-    const range: number[] = [];
+    const range: number[] = []
     for (let i = 0; i < this.length; i++) {
-      range.push(i);
+      range.push(i)
     }
-    return range;
+    return range
   }
 }
 </script>
@@ -50,7 +50,7 @@ export default class Intensity extends Vue {
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-  border: 1px solid rgba(255,255,255,0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   display: inline-block;
   padding: 3px !important;
   margin-right: 4px;
@@ -58,7 +58,7 @@ export default class Intensity extends Vue {
   font-size: 12px;
   width: 20px;
   height: 20px;
-  font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;
+  font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: normal;
   line-height: 12px;

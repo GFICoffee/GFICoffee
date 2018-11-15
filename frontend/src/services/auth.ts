@@ -5,7 +5,8 @@ import store from '@/store'
 
 import axios from 'axios'
 import SymfonyLexikAdapter from './auth/symfony-lexik-adapter'
-const client = axios.create({baseURL: environment.apiBaseUrl})
+
+const client = axios.create({ baseURL: environment.apiBaseUrl })
 
 export interface Payload {
   jti: string,
@@ -57,16 +58,15 @@ export interface ResourceAccess {
   account: RealmAccess
 }
 
-
 const auth = new Auth(
-  {loginEndpoint: {url: `login_check`, method: 'POST'}},
+  { loginEndpoint: { url: `login_check`, method: 'POST' } },
   new SymfonyLexikAdapter(),
   new AxiosAdapter(client),
   {
     accessTokenDecoder: new JwtTokenDecoder(NaN),
     excludes: [
       `${environment.apiBaseUrl}/login`,
-      `${environment.apiBaseUrl}/coffee/list`,
+      `${environment.apiBaseUrl}/coffee/list`
     ]
   }
 )

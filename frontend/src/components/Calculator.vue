@@ -73,7 +73,7 @@
   </v-layout>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch, Inject } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch, Inject } from 'vue-property-decorator'
 import Coffee from '@/api/model/Coffee'
 import OrderResource from '@/api/Order'
 import OrderDto from '@/api/model/OrderDto'
@@ -95,11 +95,11 @@ export default class Calculator extends Vue {
     let total: number = 0
 
     if (coffee.quantity30 && coffee.unit_price) {
-      total += coffee.unit_price * ( typeof coffee.quantity30 === 'string' ? parseFloat(coffee.quantity30) : coffee.quantity30) * 30
+      total += coffee.unit_price * (typeof coffee.quantity30 === 'string' ? parseFloat(coffee.quantity30) : coffee.quantity30) * 30
     }
 
     if (coffee.quantity50 && coffee.unit_price) {
-      total += coffee.unit_price * ( typeof coffee.quantity50 === 'string' ? parseFloat(coffee.quantity50) : coffee.quantity50) * 30
+      total += coffee.unit_price * (typeof coffee.quantity50 === 'string' ? parseFloat(coffee.quantity50) : coffee.quantity50) * 30
     }
     return total
   }
@@ -157,7 +157,7 @@ export default class Calculator extends Vue {
 
 <style scoped>
 * {
-  font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;
+  font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
 }
 
 h2 {

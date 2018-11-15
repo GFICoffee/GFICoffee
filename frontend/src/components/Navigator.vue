@@ -15,7 +15,8 @@
         <v-flex shrink>
           <v-layout column justify-center fill-height class="white--text">
             <template v-if="!authenticated">
-            <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="login()">Connexion</v-flex>
+              <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="login()">Connexion
+              </v-flex>
             </template>
             <template v-else>
               <v-flex shrink class="subheading text-uppercase text-xs-center pointer">
@@ -52,7 +53,6 @@ import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox'
 import { GetterAuth, Payload, StateAuth, MutationAuth } from '@/store/auth'
 import { environment } from '../environments/environment'
 
-
 @Component({
   components: {
     Account
@@ -81,9 +81,11 @@ export default class Navigator extends Vue {
   }
 
   mounted () {
-    this.auth.addListener({tokensChanged: (tokens) => {
-      this.setPayload(this.auth.decodeAccessToken() as Payload)
-    }})
+    this.auth.addListener({
+      tokensChanged: (tokens) => {
+        this.setPayload(this.auth.decodeAccessToken() as Payload)
+      }
+    })
   }
 
   login () {
@@ -94,9 +96,9 @@ export default class Navigator extends Vue {
 
 <style scoped>
 .navigator {
-  background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgb(17,17,17) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%,rgb(17,17,17) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgb(17,17,17) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgb(17, 17, 17) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0%, rgb(17, 17, 17) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(17, 17, 17) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
 .x {

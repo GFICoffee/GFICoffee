@@ -1,7 +1,7 @@
 import services from '@/services'
-import { AbstractResource, AxiosResponseExt } from '@/api/index';
+import { AbstractResource, AxiosResponseExt } from '@/api/index'
 import { environment } from '@/environments/environment.ts'
-import OrderDto from '@/api/model/OrderDto';
+import OrderDto from '@/api/model/OrderDto'
 
 export default class OrderResource extends AbstractResource {
   order (order: OrderDto): Promise<any & AxiosResponseExt> {

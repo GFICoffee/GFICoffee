@@ -1,4 +1,4 @@
-import CoffeeType from '@/api/model/CoffeeType';
+import CoffeeType from '@/api/model/CoffeeType'
 
 export default interface Coffee {
   id?: number

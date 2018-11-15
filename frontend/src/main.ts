@@ -12,16 +12,15 @@ import './styles/global.css'
 import services from './services'
 import './registerServiceWorker'
 
-Vue.config.productionTip = false;
-
+Vue.config.productionTip = false
 
 const urlParams = new URLSearchParams(window.location.search)
 const token = urlParams.get('token')
 
 if (token) {
   if (history.pushState) {
-    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-    window.history.pushState({ path: newurl }, '', newurl);
+    let newurl = window.location.protocol + '//' + window.location.host + window.location.pathname
+    window.history.pushState({ path: newurl }, '', newurl)
   }
   services.auth.setTokens({ access: { value: token } })
 }

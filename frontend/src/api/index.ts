@@ -4,7 +4,6 @@ export interface AxiosResponseExt {
   $axios: AxiosResponse
 }
 
-
 export abstract class AbstractResource {
   protected wrapPromise (axiosPromise: AxiosPromise) {
     return new Promise((resolve, reject) => {

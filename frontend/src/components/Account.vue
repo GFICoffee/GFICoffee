@@ -16,13 +16,18 @@
             <v-spacer/>
             <v-flex shrink>
               <v-tooltip top>
-                <v-icon color="white" slot="activator" @click="exportAllWaitingOrders()" :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-file-export</v-icon>
+                <v-icon color="white" slot="activator" @click="exportAllWaitingOrders()"
+                        :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-file-export
+                </v-icon>
                 <span>Exporter</span>
               </v-tooltip>
             </v-flex>
             <v-flex shrink class="ml-3">
               <v-tooltip top>
-                <v-icon color="white" slot="activator" @click="validateOrdersDialog = true" :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-checkbox-multiple-marked</v-icon>
+                <v-icon color="white" slot="activator" @click="validateOrdersDialog = true"
+                        :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">
+                  mdi-checkbox-multiple-marked
+                </v-icon>
                 <span>Valider toutes les commandes</span>
               </v-tooltip>
             </v-flex>
@@ -108,8 +113,8 @@ export default class Account extends Vue {
 
   calcTotalPrice (item: Coffee): string {
     if (item.unit_price) {
-      const quantity30: number = parseInt(`${item.quantity30}`)
-      const quantity50: number = parseInt(`${item.quantity50}`)
+      const quantity30: number = parseInt(`${item.quantity30}`, undefined)
+      const quantity50: number = parseInt(`${item.quantity50}`, undefined)
       return (((30 * quantity30) + (50 * quantity50)) * item.unit_price).toFixed(2)
     }
     return ''
@@ -195,16 +200,15 @@ export default class Account extends Vue {
 </script>
 
 <style scoped>
-  .thin {
-    font-weight: 100;
-  }
+.thin {
+  font-weight: 100;
+}
 
-  .account /deep/ td {
-    white-space: nowrap;
-  }
+.account /deep/ td {
+  white-space: nowrap;
+}
 
-  .pointer {
-    cursor: pointer;
-  }
+.pointer {
+  cursor: pointer;
+}
 </style>
-

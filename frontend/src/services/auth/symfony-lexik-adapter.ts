@@ -6,7 +6,7 @@ import {
   Token,
   Tokens,
   UsernamePasswordCredentials
-} from 'auth-toolbox';
+} from 'auth-toolbox'
 
 export interface LoginResponse {
   token: string,
@@ -29,7 +29,7 @@ export default class SymfonyLexikAdapter implements ServerAdapter {
   getResponseTokens (response: Response): Tokens {
     const loginResponse: LoginResponse = response.data
 
-    return { access: { value: loginResponse.token}}
+    return { access: { value: loginResponse.token } }
   }
 
   setAccessToken (request: Request, accessToken: string): void {

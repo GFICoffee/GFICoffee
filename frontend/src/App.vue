@@ -11,9 +11,9 @@
   </v-app>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import Navigator from '@/components/Navigator.vue';
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import Navigator from '@/components/Navigator.vue'
 
 @Component({
   components: {
@@ -23,4 +23,3 @@ import Navigator from '@/components/Navigator.vue';
 export default class App extends Vue {
 }
 </script>
-

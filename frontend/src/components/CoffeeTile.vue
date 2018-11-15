@@ -43,9 +43,9 @@
   </v-hover>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import Intensity from '@/components/Intensity.vue';
-import Coffee from '@/api/model/Coffee';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import Intensity from '@/components/Intensity.vue'
+import Coffee from '@/api/model/Coffee'
 
 @Component({
   components: {

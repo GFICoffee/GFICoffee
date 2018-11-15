@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator'
 import OrderDto from '@/api/model/OrderDto'
 import Coffee from '@/api/model/Coffee'
 
@@ -94,8 +94,8 @@ export default class OrdersTable extends Vue {
 
   calcTotalPrice (item: Coffee): string {
     if (item.unit_price) {
-      const quantity30: number = parseInt(`${item.quantity30 || 0}`)
-      const quantity50: number = parseInt(`${item.quantity50 || 0}`)
+      const quantity30: number = parseInt(`${item.quantity30 || 0}`, undefined)
+      const quantity50: number = parseInt(`${item.quantity50 || 0}`, undefined)
       return (((30 * quantity30) + (50 * quantity50)) * item.unit_price).toFixed(2)
     }
     return ''
@@ -121,4 +121,3 @@ export default class OrdersTable extends Vue {
   cursor: pointer;
 }
 </style>
-

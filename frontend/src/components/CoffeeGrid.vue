@@ -29,7 +29,7 @@
   </v-layout>
 </template>
 <script lang="ts">
-import { Vue, Component, Watch, Inject } from 'vue-property-decorator';
+import { Vue, Component, Watch, Inject } from 'vue-property-decorator'
 import CoffeeTile from '@/components/CoffeeTile.vue'
 import Coffee from '@/api/model/Coffee'
 import filter from 'lodash/filter'
@@ -83,7 +83,7 @@ export default class CoffeeGrid extends Vue {
 .coffee-name {
   text-transform: uppercase;
   text-align: center;
-  font-family: 'Trebuchet MS',Helvetica,Arial,sans-serif;
+  font-family: 'Trebuchet MS', Helvetica, Arial, sans-serif;
   font-size: 18px;
   color: #B3B3B3 !important;
 }

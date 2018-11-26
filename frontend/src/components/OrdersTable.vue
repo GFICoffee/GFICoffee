@@ -30,6 +30,7 @@
       <template slot="expand" slot-scope="props">
         <v-card flat>
           <v-data-table
+              class="subtable"
               :items="props.item.items"
               hide-actions
               :headers="subheaders"
@@ -37,10 +38,10 @@
             <template slot="items" slot-scope="subprops">
               <tr @click="props.expanded = !props.expanded">
                 <td>{{ subprops.item.name }}</td>
-                <td>{{ subprops.item.quantity30 }}</td>
-                <td>{{ subprops.item.quantity50 }}</td>
-                <td>{{ subprops.item.unit_price }} €</td>
-                <td>{{ calcTotalPrice(subprops.item) }} €</td>
+                <td class="text-xs-center">{{ subprops.item.quantity30 }}</td>
+                <td class="text-xs-center">{{ subprops.item.quantity50 }}</td>
+                <td class="text-xs-center">{{ subprops.item.unit_price }} €</td>
+                <td class="text-xs-center">{{ calcTotalPrice(subprops.item) }} €</td>
               </tr>
             </template>
           </v-data-table>
@@ -85,10 +86,10 @@ export default class OrdersTable extends Vue {
   get subheaders () {
     return [
       { text: 'Produit', sortable: false },
-      { text: 'Quantité x30', sortable: false },
-      { text: 'Quantité x50', sortable: false },
-      { text: 'Prix unitaire', sortable: false },
-      { text: 'Total', sortable: false }
+      { text: 'Quantité x30', sortable: false, class: 'text-xs-center' },
+      { text: 'Quantité x50', sortable: false, class: 'text-xs-center' },
+      { text: 'Prix unitaire', sortable: false, class: 'text-xs-center' },
+      { text: 'Total', sortable: false, class: 'text-xs-center' }
     ]
   }
 
@@ -119,5 +120,9 @@ export default class OrdersTable extends Vue {
 
 .pointer {
   cursor: pointer;
+}
+
+.subtable /deep/ .v-datatable{
+  background-color: #525252;
 }
 </style>

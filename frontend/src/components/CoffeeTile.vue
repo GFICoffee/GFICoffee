@@ -66,8 +66,8 @@ export default class CoffeeTile extends Vue {
   }
 
   get typeIcon (): string {
-    if (this.coffee) {
-      switch (this.coffee.type) {
+    if (this.coffee && this.coffee.type) {
+      switch (this.coffee.type.type) {
         case 'ristretto':
           return require('@/assets/icons/small.png')
         case 'espresso':

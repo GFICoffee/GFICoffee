@@ -53,7 +53,7 @@
             <v-flex shrink>
               <v-btn ouline @click="confirmDialog = true" :disabled="!canOrder">Commander</v-btn>
               <v-dialog v-model="confirmDialog" width="500">
-                <v-card color="secondary lighten-1 pb-2 px-3">
+                <v-card class="confirm pb-2 px-3" color="secondary lighten-1">
                   <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
                   <v-flex class="white--text">
                     Êtes-vous sûr de vouloir passer cette commande ?
@@ -170,6 +170,10 @@ h3 {
 
 h6 {
   font-size: .8em;
+}
+
+.confirm.v-card {
+  border: solid #929292 1px !important;
 }
 
 .coffee-choice {

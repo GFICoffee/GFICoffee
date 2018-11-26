@@ -1,5 +1,5 @@
 <template>
-  <v-card class="account" color="secondary lighten-1 pb-2 px-3">
+  <v-card class="account pb-2 px-3" color="secondary lighten-1">
     <v-card-title class="headline white--text">Mon compte</v-card-title>
     <v-flex>
       <v-layout column>
@@ -202,6 +202,10 @@ export default class Account extends Vue {
 <style scoped>
 .thin {
   font-weight: 100;
+}
+
+.v-card.account {
+  border: solid #929292 1px !important;
 }
 
 .account /deep/ td {

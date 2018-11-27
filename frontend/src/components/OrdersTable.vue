@@ -18,7 +18,10 @@
               <v-flex shrink class="actions ml-3">
                 <v-layout>
                   <v-flex>
-                    <v-icon @click.stop.prevent="deleteDialog = true; deleteId = props.item.id">mdi-delete</v-icon>
+                    <v-tooltip top>
+                      <v-icon slot="activator" @click.stop.prevent="deleteDialog = true; deleteId = props.item.id">mdi-delete</v-icon>
+                      <span>Supprimer</span>
+                    </v-tooltip>
                   </v-flex>
                 </v-layout>
               </v-flex>

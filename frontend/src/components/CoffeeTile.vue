@@ -94,12 +94,12 @@ export default class CoffeeTile extends Vue {
 }
 
 .coffee-tile:hover .coffee-img {
-  width: calc(100% - 10px);
+  transform: translate(-50%, -45%);
 }
 
 .coffee-img {
   width: 100%;
-  transition: all 0.05s ease;
+  transition: all 0.2s ease;
   position: relative;
   display: block;
   top: 50%;

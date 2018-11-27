@@ -2,7 +2,7 @@
 
   <v-hover>
     <v-responsive
-        :aspect-ratio="91/141"
+        :aspect-ratio="91/145"
         width="182px"
         class="coffee-tile secondary"
         slot-scope="{ hover }"
@@ -23,10 +23,13 @@
             <v-flex xs12>
               <h4 class="coffee-desc">{{ coffee.desc }}</h4>
             </v-flex>
+            <v-flex xs12>
+              <h4 class="coffee-price">{{ coffee.unit_price.toFixed(2) }}€ / unité</h4>
+            </v-flex>
           </v-layout>
         </v-flex>
         <v-flex shrink class="px-2">
-          <v-layout>
+          <v-layout wrap>
             <v-flex>
               <intensity
                   :length="12"
@@ -121,8 +124,17 @@ export default class CoffeeTile extends Vue {
   font-weight: normal;
 }
 
+.coffee-price {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 10px;
+  line-height: 11px;
+  font-weight: normal;
+}
+
 .coffee-name,
-.coffee-desc {
+.coffee-desc,
+.coffee-price {
   font-family: "Trebuchet MS", Helvetica, arial, sans-serif;
 }
 </style>

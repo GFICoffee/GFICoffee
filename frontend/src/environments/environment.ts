@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://GFICoffee.test/sf/index.php'
+  apiBaseUrl: 'https://gficoffee.etudes.local/sf/index.php'
 }

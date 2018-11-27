@@ -12,7 +12,8 @@ ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 RUN npm i --global npm
 
 # Allow nodeJS to run server on port < 1024
-RUN setcap 'cap_net_bind_service=+ep' $(which node)
+RUN apt-get update -y && apt-get install -y libcap2-bin && rm -rf /var/lib/apt/lists/* \
+&& setcap 'cap_net_bind_service=+ep' $(which node)
 
 # Fix permissions to match host user
 RUN usermod -u ${HOST_UID:-1000} node && groupmod -g ${HOST_GID:-1000} node

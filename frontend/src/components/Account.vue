@@ -47,9 +47,11 @@
       <v-card color="secondary lighten-1 pb-2 px-3">
         <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
         <v-flex class="white--text">
-          Êtes-vous sûr de vouloir valider toutes les commandes en attente ?
+          Êtes-vous sûr de vouloir valider toutes les commandes en attente ?<br/>
+          Pensez à <span class="font-weight-bold green--text">exporter</span> les données avant de les valider.
         </v-flex>
         <v-card-actions>
+          <v-btn flat :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0" @click="exportAllWaitingOrders()">Exporter</v-btn>
           <v-spacer/>
           <v-btn flat @click="validateOrdersDialog = false">Non</v-btn>
           <v-btn outline @click="validateAllWaitingOrders()" :loading="validateOrdersLoading">Oui</v-btn>

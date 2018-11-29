@@ -125,6 +125,7 @@ class MainController extends AbstractController
             $user->setFirstname(array_key_exists('given_name', $userInfo) ? $userInfo['given_name'] : '');
             $user->setLastname(array_key_exists('family_name', $userInfo) ? $userInfo['family_name'] : '');
             $user->setRoles(array('ROLE_USER'));
+            $user->setEnabled(true);
             $user->setPlainPassword(generateRandomString());
         }
 

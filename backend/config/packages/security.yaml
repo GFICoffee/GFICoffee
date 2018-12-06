@@ -11,6 +11,10 @@ security:
         fos_userbundle:
             id: fos_user.user_provider.username_email
     firewalls:
+        test:
+            pattern: ^/test
+            stateless: true
+            anonymous: true
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -44,6 +48,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/test, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(login|authorize), role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/coffee/list, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

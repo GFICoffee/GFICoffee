@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Coffee;
 use App\Entity\User;
 use App\Service\AuthService;
+use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Minishlink\WebPush\WebPush;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations\Route;
@@ -26,6 +28,9 @@ class MainController extends AbstractController
     /** @var AuthService */
     private $authService;
 
+    /** @var NotificationService */
+    private $notificationService;
+
     /** @var JWTTokenManagerInterface */
     private $tokenManager;
 
@@ -34,11 +39,13 @@ class MainController extends AbstractController
 
     public function __construct(EntityManagerInterface $em,
                                 AuthService $authService,
+                                NotificationService $notificationService,
                                 JWTTokenManagerInterface $tokenManager,
                                 ParameterBagInterface $parameterBag)
     {
         $this->em = $em;
         $this->authService = $authService;
+        $this->notificationService = $notificationService;
         $this->tokenManager = $tokenManager;
         $this->parameterBag = $parameterBag;
     }
@@ -50,6 +57,16 @@ class MainController extends AbstractController
     public function rootAction()
     {
         return new JsonResponse('It works');
+    }
+
+    /**
+     * @View
+     * @Get("/test")
+     */
+    public function testAction()
+    {
+        $result = $this->notificationService->sendNotification('Hello world from backend API');
+        return new JsonResponse($result);
     }
 
     /**

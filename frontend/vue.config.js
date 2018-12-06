@@ -39,19 +39,17 @@ const config = {
     watchOptions: {
       poll: 1000,
     }
-  }/*,
+  },
   pwa: {
-    name: 'OISON',
-    themeColor: '#3C60BE',
-    msTileColor: '#20AB72',
+    name: 'GFI Coffee',
+    themeColor: '#000000',
+    msTileColor: '#000000',
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       swSrc: './src/sw.js',
-      swDest: 'service-worker.js',
-      importWorkboxFrom: 'disabled'
+      swDest: 'service-worker.js'
     }
   }
-  */
 }
 
 module.exports = config

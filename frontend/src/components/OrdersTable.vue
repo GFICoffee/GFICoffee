@@ -2,7 +2,6 @@
   <div class="orders-table">
     <v-data-table
         :items="value"
-        hide-actions
         class="elevation-1"
         :loading="loading"
         :no-data-text="loading ? 'Chargement de vos commandes' : 'Aucune commande en cours'"

@@ -35,6 +35,11 @@
 
           <orders-table :value="allWaitingOrders" :loading="allWaitingOrdersLoading" @delete="deleteOrder"/>
         </v-flex>
+
+        <v-flex class="all-not-waiting-orders" v-if="isAdmin">
+          <h3 class="white--text thin mb-2 mt-3">Toutes les commandes traitées</h3>
+          <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" @delete="deleteOrder"/>
+        </v-flex>
       </v-layout>
     </v-flex>
     <v-card-actions>
@@ -90,8 +95,10 @@ export default class Account extends Vue {
 
   waitingOrders: OrderDto[] = []
   allWaitingOrders: OrderDto[] = []
+  allNotWaitingOrders: OrderDto[] = []
   waitingOrdersLoading: boolean = false
   allWaitingOrdersLoading: boolean = false
+  allNotWaitingOrdersLoading: boolean = false
 
   validateOrdersDialog: boolean = false
   validateOrdersLoading: boolean = false
@@ -167,6 +174,7 @@ export default class Account extends Vue {
       this.allWaitingOrders = []
       this.waitingOrders = []
       this.validateOrdersDialog = false
+      this.reloadAllNotWaitingOrders()
     } catch (e) {
       console.error(e)
     } finally {
@@ -175,14 +183,14 @@ export default class Account extends Vue {
   }
 
   @Watch('dialogStatus', { immediate: true })
-  async onDialogStatusChanged (newVal: boolean) {
+  onDialogStatusChanged (newVal: boolean) {
     if (newVal) {
       this.waitingOrdersLoading = true
       this.orderResource.getWaitingOrders().then((result) => {
         this.waitingOrders = result
         this.waitingOrdersLoading = false
       }).catch((err) => {
-        console.log(err)
+        console.error(err)
         this.waitingOrdersLoading = false
       })
 
@@ -192,11 +200,23 @@ export default class Account extends Vue {
           this.allWaitingOrders = result
           this.allWaitingOrdersLoading = false
         }).catch((err) => {
-          console.log(err)
+          console.error(err)
           this.allWaitingOrdersLoading = false
         })
+        this.reloadAllNotWaitingOrders()
       }
     }
+  }
+
+  private reloadAllNotWaitingOrders () {
+    this.allNotWaitingOrdersLoading = true
+    this.orderResource.getAllNotWaitingOrders().then((result) => {
+      this.allNotWaitingOrders = result
+      this.allNotWaitingOrdersLoading = false
+    }).catch((err) => {
+      console.error(err)
+      this.allNotWaitingOrdersLoading = false
+    })
   }
 }
 </script>

@@ -112,10 +112,6 @@ export default class OrdersTable extends Vue {
 </script>
 
 <style scoped>
-.thin {
-  font-weight: 100;
-}
-
 .orders-table /deep/ td {
   white-space: nowrap;
 }

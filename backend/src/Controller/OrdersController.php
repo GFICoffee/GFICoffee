@@ -120,6 +120,29 @@ class OrdersController extends AbstractController
     }
 
     /**
+     * Récupère toutes les commandes qui ne sont pas en attente.
+     *
+     * @View()
+     * @Get("/orders/not-waiting-all")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @return OrderDto[]
+     */
+    public function allNotWaitingOrdersAction(Request $request)
+    {
+        $orderRepo = $this->em->getRepository(Order::class);
+        /** @var Order[] $orders */
+        $orders = $orderRepo->findNotWaitingOrders();
+
+        /** @var OrderDto[] $ordersDto */
+        $ordersDto = array_map(function (Order $order) {
+            return $this->orderService->convertToDto($order, true);
+        }, $orders);
+        return $ordersDto;
+    }
+
+    /**
      * Supprime une commande.
      *
      * @View()

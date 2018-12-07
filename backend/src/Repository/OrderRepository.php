@@ -31,4 +31,15 @@ class OrderRepository extends EntityRepository
         $q = $qb->getQuery();
         return $q->getResult();
     }
+
+    function findNotWaitingOrders ()
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->select('e')
+            ->where('e.isWaiting = :isWaiting')
+            ->setParameter('isWaiting', false);
+
+        $q = $qb->getQuery();
+        return $q->getResult();
+    }
 }

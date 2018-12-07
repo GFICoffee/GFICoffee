@@ -16,7 +16,7 @@
               <v-flex shrink v-if="props.item.user">{{ props.item.user.username }}</v-flex>
               <v-flex shrink class="actions ml-3">
                 <v-layout>
-                  <v-flex>
+                  <v-flex v-if="canDelete">
                     <v-tooltip top>
                       <v-icon slot="activator" @click.stop.prevent="deleteDialog = true; deleteId = props.item.id">mdi-delete</v-icon>
                       <span>Supprimer</span>
@@ -81,6 +81,9 @@ export default class OrdersTable extends Vue {
 
   @Prop({ type: Boolean, default: false })
   loading!: boolean
+
+  @Prop({ type: Boolean, default: true })
+  canDelete!: boolean
 
   deleteDialog: boolean = false
   deleteId: number | string | null = null

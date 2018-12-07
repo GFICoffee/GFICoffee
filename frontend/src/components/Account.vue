@@ -38,7 +38,7 @@
 
         <v-flex class="all-not-waiting-orders" v-if="isAdmin">
           <h3 class="white--text thin mb-2 mt-3">Toutes les commandes traitées</h3>
-          <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" @delete="deleteOrder"/>
+          <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" :canDelete="false"/>
         </v-flex>
       </v-layout>
     </v-flex>

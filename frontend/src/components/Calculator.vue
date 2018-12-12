@@ -99,7 +99,7 @@ export default class Calculator extends Vue {
     }
 
     if (coffee.quantity50 && coffee.unit_price) {
-      total += coffee.unit_price * (typeof coffee.quantity50 === 'string' ? parseFloat(coffee.quantity50) : coffee.quantity50) * 30
+      total += coffee.unit_price * (typeof coffee.quantity50 === 'string' ? parseFloat(coffee.quantity50) : coffee.quantity50) * 50
     }
     return total
   }

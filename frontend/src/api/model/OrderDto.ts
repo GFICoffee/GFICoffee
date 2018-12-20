@@ -5,4 +5,5 @@ export default interface OrderDto {
   id?: number
   user?: UserModel
   items: Coffee[]
+  paid: boolean
 }

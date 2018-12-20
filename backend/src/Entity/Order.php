@@ -43,6 +43,28 @@ class Order
     protected $validationDate;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    protected $paid = false;
+
+    /**
+     * @return bool
+     */
+    public function isPaid(): bool
+    {
+        return $this->paid;
+    }
+
+    /**
+     * @param bool $paid
+     */
+    public function setPaid(bool $paid): void
+    {
+        $this->paid = $paid;
+    }
+
+    /**
      * @return \DateTime|null
      */
     public function getValidationDate(): ?\DateTime

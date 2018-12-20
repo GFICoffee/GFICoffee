@@ -37,6 +37,7 @@ class OrderService
         if ($showUser) {
             $dto->setUser(new UserModel($order->getUser()));
         }
+        $dto->setPaid($order->isPaid());
 
         return $dto;
     }

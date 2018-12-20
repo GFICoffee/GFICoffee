@@ -7,13 +7,15 @@ use App\Entity\Order;
 use App\Entity\OrderedCoffee;
 use App\Entity\User;
 use App\Model\Coffee\OrderDto;
+use App\Repository\OrderRepository;
 use App\Service\OrderService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,7 +55,9 @@ class OrdersController extends AbstractController
      */
     public function orderAction(Request $request, UserInterface $user, OrderDto $data)
     {
+        /** @var EntityRepository $userRepo */
         $userRepo = $this->em->getRepository(User::class);
+        /** @var EntityRepository $coffeeRepo */
         $coffeeRepo = $this->em->getRepository(Coffee::class);
         $order = new Order();
         $order->setUser($userRepo->findOneByUsername($user->getUsername()));
@@ -66,6 +70,34 @@ class OrdersController extends AbstractController
             $orderedCoffee->setQuantity30($item->getQuantity30());
             $orderedCoffee->setQuantity50($item->getQuantity50());
             $order->getItems()->add($orderedCoffee);
+        }
+
+        $this->em->merge($order);
+        $this->em->flush();
+        return $order;
+    }
+
+    /**
+     * Modifie une commande.
+     * TODO: Pour le moment, seule la propriété "paid" est mise a jour. Il faut aussi mettre a jour les items
+     *
+     * @View()
+     * @Put("/order")
+     *
+     * @ParamConverter("data", converter="fos_rest.request_body")
+     *
+     * @param Request $request
+     * @param OrderDto $data
+     * @return Order
+     */
+    public function updateOrderAction(Request $request, OrderDto $data)
+    {
+        /** @var OrderRepository $orderRepo */
+        $orderRepo = $this->em->getRepository(Order::class);
+        /** @var Order|null $order */
+        $order = $orderRepo->find($data->getId());
+        if ($order) {
+            $order->setPaid($data->isPaid());
         }
 
         $this->em->merge($order);

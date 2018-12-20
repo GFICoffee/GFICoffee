@@ -38,7 +38,7 @@
 
         <v-flex class="all-not-waiting-orders" v-if="isAdmin">
           <h3 class="white--text thin mb-2 mt-3">Toutes les commandes traitées</h3>
-          <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" :canDelete="false"/>
+          <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" :canDelete="false" :payControl="true" @update="updateOrder"/>
         </v-flex>
       </v-layout>
     </v-flex>
@@ -154,6 +154,17 @@ export default class Account extends Vue {
     } finally {
       this.waitingOrdersLoading = false
       this.allWaitingOrdersLoading = false
+    }
+  }
+
+  async updateOrder (order: OrderDto) {
+    try {
+      this.allNotWaitingOrdersLoading = true
+      await this.orderResource.updateOrder(order)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      this.allNotWaitingOrdersLoading = false
     }
   }
 

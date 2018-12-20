@@ -133,7 +133,8 @@ export default class Calculator extends Vue {
     this.orderLoading = true
     try {
       const order: OrderDto = {
-        items: this.selectedCoffee
+        items: this.selectedCoffee,
+        paid: false
       }
       await this.orderResource.order(order)
     } catch (e) {

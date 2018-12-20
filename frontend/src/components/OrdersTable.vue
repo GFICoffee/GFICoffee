@@ -16,6 +16,12 @@
               <v-flex shrink v-if="props.item.user">{{ props.item.user.username }}</v-flex>
               <v-flex shrink class="actions ml-3">
                 <v-layout>
+                  <v-flex v-if="payControl">
+                    <v-tooltip top>
+                      <v-switch slot="activator" :disabled="loading" @click.native.stop @change="updateOrder(props.item)" v-model="props.item.paid" hide-details/>
+                      <span>A payé ?</span>
+                    </v-tooltip>
+                  </v-flex>
                   <v-flex v-if="canDelete">
                     <v-tooltip top>
                       <v-icon slot="activator" @click.stop.prevent="deleteDialog = true; deleteId = props.item.id">mdi-delete</v-icon>
@@ -85,6 +91,9 @@ export default class OrdersTable extends Vue {
   @Prop({ type: Boolean, default: true })
   canDelete!: boolean
 
+  @Prop({ type: Boolean, default: false })
+  payControl!: boolean
+
   deleteDialog: boolean = false
   deleteId: number | string | null = null
 
@@ -110,6 +119,10 @@ export default class OrdersTable extends Vue {
   deleteOrder (id: string | number) {
     this.$emit('delete', id)
     this.deleteDialog = false
+  }
+
+  updateOrder (order: OrderDto) {
+    this.$emit('update', order)
   }
 }
 </script>

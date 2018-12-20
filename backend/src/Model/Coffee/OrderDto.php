@@ -26,6 +26,28 @@ class OrderDto
     protected $items;
 
     /**
+     * @var bool
+     * @Serializer\Type("boolean")
+     */
+    protected $paid;
+
+    /**
+     * @return bool
+     */
+    public function isPaid(): bool
+    {
+        return $this->paid;
+    }
+
+    /**
+     * @param bool $paid
+     */
+    public function setPaid(bool $paid): void
+    {
+        $this->paid = $paid;
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int

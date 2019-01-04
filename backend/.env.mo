@@ -37,7 +37,7 @@ JWT_TTL=2592000
 
 OAUTH_APP_ID=719260db-1aa6-4460-9d55-0a69d341cb87
 OAUTH_APP_PASSWORD=cola060*pzeZLNMXYC34$;?
-OAUTH_REDIRECT_URI=https://{{DOCKER_DEVBOX_DOMAIN_PREFIX}}.{{DOCKER_DEVBOX_DOMAIN}}/sf/authorize
+OAUTH_REDIRECT_URI=https://{{DOCKER_DEVBOX_DOMAIN_PREFIX}}.{{DOCKER_DEVBOX_DOMAIN}}/sf/index.php/authorize
 OAUTH_SCOPES='openid profile offline_access User.Read'
 OAUTH_AUTHORITY=https://login.microsoftonline.com/common
 OAUTH_AUTHORIZE_ENDPOINT=/oauth2/v2.0/authorize

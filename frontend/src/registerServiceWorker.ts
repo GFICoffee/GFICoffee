@@ -55,7 +55,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     async registered (registration: ServiceWorkerRegistration) {
       console.log('Service worker has been registered.')
-      await manageNotificationSubscription(registration)
+      // await manageNotificationSubscription(registration)
     },
     cached () {
       console.log('Content has been cached for offline use.')

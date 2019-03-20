@@ -72,7 +72,18 @@ const auth = new Auth(
 )
 
 const payload = auth.decodeAccessToken()
-store.commit('auth/setPayload', payload)
+
+function isExpired (payload: any) {
+  const now = new Date().getTime()
+  if ('exp' in payload && now >= payload.exp) {
+    return true
+  }
+  return false
+}
+
+if (!payload || !isExpired(payload)) {
+  store.commit('auth/setPayload', payload)
+}
 
 auth.addListener({
   tokensChanged: () => {

@@ -77,6 +77,7 @@ import { Vue, Component, Prop, Watch, Inject } from 'vue-property-decorator'
 import Coffee from '@/api/model/Coffee'
 import OrderResource from '@/api/Order'
 import OrderDto from '@/api/model/OrderDto'
+import filter from 'lodash/filter'
 
 @Component
 export default class Calculator extends Vue {
@@ -122,6 +123,8 @@ export default class Calculator extends Vue {
       for (let coffee of this.selectedCoffee) {
         if (!coffee.quantity30 && !coffee.quantity50) {
           canOrder = false
+        } else if (this.selectedCoffee.length > 1 && (coffee.quantity30 || coffee.quantity50)) {
+          canOrder = true
           break
         }
       }
@@ -133,7 +136,9 @@ export default class Calculator extends Vue {
     this.orderLoading = true
     try {
       const order: OrderDto = {
-        items: this.selectedCoffee,
+        items: filter<Coffee[]>(this.selectedCoffee, function (coffee: Coffee) {
+          return coffee.quantity30 || coffee.quantity50
+        }) as Coffee[],
         paid: false
       }
       await this.orderResource.order(order)

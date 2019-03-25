@@ -35,6 +35,9 @@
             <v-flex shrink>
               <h3 class="white--text">{{ coffePrice(coffee).toFixed(2) }}&nbsp;€</h3>
             </v-flex>
+            <v-flex shrink>
+              <v-icon class="ml-3" @click="removeCoffee(coffee)">mdi-close</v-icon>
+            </v-flex>
           </v-layout>
         </v-flex>
 
@@ -91,6 +94,14 @@ export default class Calculator extends Vue {
   quantities: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   confirmDialog: boolean = false
   orderLoading: boolean = false
+
+  removeCoffee (coffee: Coffee) {
+    const index = this.selectedCoffee.indexOf(coffee)
+    if (index >= 0) {
+      this.selectedCoffee.splice(index, 1)
+      this.$emit('input', this.selectedCoffee)
+    }
+  }
 
   coffePrice (coffee: Coffee): number {
     let total: number = 0

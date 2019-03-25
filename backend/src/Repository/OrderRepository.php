@@ -37,6 +37,7 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('e');
         $qb->select('e')
             ->where('e.isWaiting = :isWaiting')
+            ->orderBy('e.id', 'DESC')
             ->setParameter('isWaiting', false);
 
         $q = $qb->getQuery();

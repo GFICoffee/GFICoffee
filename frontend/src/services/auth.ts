@@ -74,7 +74,7 @@ const auth = new Auth(
 const payload = auth.decodeAccessToken()
 
 function isExpired (payload: any) {
-  const now = new Date().getTime()
+  const now = new Date().getTime() / 1000
   if ('exp' in payload && now >= payload.exp) {
     return true
   }

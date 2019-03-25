@@ -21,6 +21,21 @@ class OrderRepository extends EntityRepository
         return $q->getResult();
     }
 
+  function findNotWaitingOrdersForUser (UserInterface $user)
+  {
+    $qb = $this->createQueryBuilder('e');
+    $qb->select('e')
+      ->leftJoin('e.user', 'u')
+      ->where('u.username = :username')
+      ->andWhere('e.isWaiting = :isWaiting')
+      ->orderBy('e.id', 'DESC')
+      ->setParameter('username', $user->getUsername())
+      ->setParameter('isWaiting', false);
+
+    $q = $qb->getQuery();
+    return $q->getResult();
+  }
+
     function findWaitingOrders ()
     {
         $qb = $this->createQueryBuilder('e');

@@ -8,8 +8,19 @@
           <orders-table :value="waitingOrders" :loading="waitingOrdersLoading" @delete="deleteOrder"/>
         </v-flex>
 
+        <v-flex class="not-waiting-orders">
+          <h3 class="white--text thin mb-2 mt-3">Toutes mes commandes traitées</h3>
+          <orders-table :value="notWaitingOrders" :loading="notWaitingOrdersLoading" :canDelete="false"/>
+        </v-flex>
+
         <v-flex class="all-waiting-orders" v-if="isAdmin">
-          <v-layout class="mb-2 mt-3">
+          <v-layout class="my-4">
+            <v-flex>
+              <hr/>
+            </v-flex>
+          </v-layout>
+
+          <v-layout class="mb-2">
             <v-flex shrink>
               <h3 class="white--text thin">Toutes les commandes en cours</h3>
             </v-flex>
@@ -94,9 +105,11 @@ export default class Account extends Vue {
   dialogStatus!: boolean
 
   waitingOrders: OrderDto[] = []
+  notWaitingOrders: OrderDto[] = []
   allWaitingOrders: OrderDto[] = []
   allNotWaitingOrders: OrderDto[] = []
   waitingOrdersLoading: boolean = false
+  notWaitingOrdersLoading: boolean = false
   allWaitingOrdersLoading: boolean = false
   allNotWaitingOrdersLoading: boolean = false
 
@@ -215,6 +228,15 @@ export default class Account extends Vue {
           this.allWaitingOrdersLoading = false
         })
         this.reloadAllNotWaitingOrders()
+      } else {
+        this.notWaitingOrdersLoading = true
+        this.orderResource.getNotWaitingOrders().then((result) => {
+          this.notWaitingOrders = result
+          this.notWaitingOrdersLoading = false
+        }).catch((err) => {
+          console.error(err)
+          this.notWaitingOrdersLoading = false
+        })
       }
     }
   }
@@ -227,6 +249,15 @@ export default class Account extends Vue {
     }).catch((err) => {
       console.error(err)
       this.allNotWaitingOrdersLoading = false
+    })
+
+    this.notWaitingOrdersLoading = true
+    this.orderResource.getNotWaitingOrders().then((result) => {
+      this.notWaitingOrders = result
+      this.notWaitingOrdersLoading = false
+    }).catch((err) => {
+      console.error(err)
+      this.notWaitingOrdersLoading = false
     })
   }
 }

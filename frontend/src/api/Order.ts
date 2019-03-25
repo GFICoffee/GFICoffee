@@ -19,6 +19,11 @@ export default class OrderResource extends AbstractResource {
     return this.wrapPromise(services.axios.get(path)) as Promise<OrderDto[] & AxiosResponseExt>
   }
 
+  getNotWaitingOrders (): Promise<OrderDto[] & AxiosResponseExt> {
+    let path = `${environment.apiBaseUrl}/orders/not-waiting`
+    return this.wrapPromise(services.axios.get(path)) as Promise<OrderDto[] & AxiosResponseExt>
+  }
+
   getAllWaitingOrders (): Promise<OrderDto[] & AxiosResponseExt> {
     let path = `${environment.apiBaseUrl}/orders/waiting-all`
     return this.wrapPromise(services.axios.get(path)) as Promise<OrderDto[] & AxiosResponseExt>

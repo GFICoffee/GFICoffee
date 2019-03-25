@@ -129,6 +129,29 @@ class OrdersController extends AbstractController
     }
 
     /**
+     * Récupère toutes les commandes qui ne sont pas en attente de l'utilisateur courant.
+     *
+     * @View()
+     * @Get("/orders/not-waiting")
+     *
+     * @param Request $request
+     * @param UserInterface $user
+     * @return OrderDto[]
+     */
+    public function notWaitingOrdersAction(Request $request, UserInterface $user)
+    {
+      $orderRepo = $this->em->getRepository(Order::class);
+      /** @var Order[] $orders */
+      $orders = $orderRepo->findNotWaitingOrdersForUser($user);
+
+      /** @var OrderDto[] $ordersDto */
+      $ordersDto = array_map(function (Order $order) {
+        return $this->orderService->convertToDto($order);
+      }, $orders);
+      return $ordersDto;
+    }
+
+    /**
      * Récupère toutes les commandes en attente.
      *
      * @View()

@@ -81,11 +81,15 @@ import Coffee from '@/api/model/Coffee'
 import OrderResource from '@/api/Order'
 import OrderDto from '@/api/model/OrderDto'
 import filter from 'lodash/filter'
+import { MutationSnackbar, SnackbarEntry } from '@/store/snackbar'
 
 @Component
 export default class Calculator extends Vue {
   @Inject()
   orderResource!: OrderResource
+
+  @MutationSnackbar
+  setSnackbarEntry!: (entry: SnackbarEntry) => void
 
   @Prop({ type: Array, default: () => [] })
   value!: Coffee[]
@@ -153,6 +157,13 @@ export default class Calculator extends Vue {
         paid: false
       }
       await this.orderResource.order(order)
+      this.setSnackbarEntry({
+        title: 'Commande',
+        icon: 'mdi-coffee-to-go',
+        message: 'Votre commande a bien été prise en compte.',
+        color: 'success',
+        timeout: 6000
+      } as SnackbarEntry)
     } catch (e) {
       console.error(e)
     } finally {

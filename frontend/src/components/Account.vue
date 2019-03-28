@@ -48,7 +48,20 @@
         </v-flex>
 
         <v-flex class="all-not-waiting-orders" v-if="isAdmin">
-          <h3 class="white--text thin mb-2 mt-3">Toutes les commandes traitées</h3>
+          <v-layout class="mb-2 mt-3">
+            <v-flex shrink>
+              <h3 class="white--text thin">Toutes les commandes traitées</h3>
+            </v-flex>
+            <v-spacer/>
+            <v-flex shrink>
+              <v-tooltip top>
+                <v-icon color="white" slot="activator" @click="validateNotificationDialog = true"
+                        :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-send
+                </v-icon>
+                <span>Notifier la réception</span>
+              </v-tooltip>
+            </v-flex>
+          </v-layout>
           <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" :canDelete="false" :payControl="true" @update="updateOrder"/>
         </v-flex>
       </v-layout>
@@ -59,6 +72,7 @@
         Fermer
       </v-btn>
     </v-card-actions>
+
     <v-dialog v-model="validateOrdersDialog" width="500">
       <v-card color="secondary lighten-1 pb-2 px-3">
         <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
@@ -71,6 +85,22 @@
           <v-spacer/>
           <v-btn flat @click="validateOrdersDialog = false">Non</v-btn>
           <v-btn outline @click="validateAllWaitingOrders()" :loading="validateOrdersLoading">Oui</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="validateNotificationDialog" width="500">
+      <v-card color="secondary lighten-1 pb-2 px-3">
+        <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
+        <v-flex class="white--text">
+          <p>Êtes-vous sûr de vouloir notifier les personnes dont les commandes viennent d'arriver ?</p>
+          <p class="font-weight-thin font-italic caption">Cette action enverra un mail aux personnes de la liste des commandes traitées n'ayant pas encore payé pour leur
+            indiquer qu'il peuvent venir retirer et payer leur commande.</p>
+        </v-flex>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn flat @click="validateNotificationDialog = false">Non</v-btn>
+          <v-btn outline @click="sendPickupNotification()" :loading="validateNotificationLoading">Oui</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -87,6 +117,8 @@ import { GetterAuth, Payload } from '@/store/auth'
 import { environment } from '@/environments/environment.ts'
 import { AxiosResponse } from 'axios'
 import { IAuth, UsernamePasswordCredentials } from 'auth-toolbox'
+import NotificationResource from '@/api/Notification'
+import { MutationSnackbar, SnackbarEntry } from '@/store/snackbar'
 
 @Component({
   components: {
@@ -100,6 +132,10 @@ export default class Account extends Vue {
   payload!: Payload
   @Inject()
   orderResource!: OrderResource
+  @Inject()
+  notificationResource!: NotificationResource
+  @MutationSnackbar
+  setSnackbarEntry!: (entry: SnackbarEntry) => void
 
   @Prop({ type: Boolean, default: false })
   dialogStatus!: boolean
@@ -115,6 +151,8 @@ export default class Account extends Vue {
 
   validateOrdersDialog: boolean = false
   validateOrdersLoading: boolean = false
+  validateNotificationDialog: boolean = false
+  validateNotificationLoading: boolean = false
 
   get subheaders () {
     return [
@@ -203,6 +241,25 @@ export default class Account extends Vue {
       console.error(e)
     } finally {
       this.validateOrdersLoading = false
+    }
+  }
+
+  async sendPickupNotification () {
+    this.validateNotificationLoading = true
+    try {
+      await this.notificationResource.sendPickupNotification()
+      this.validateNotificationDialog = false
+      this.setSnackbarEntry({
+        title: 'Notifications',
+        icon: 'mdi-send',
+        message: 'Notifications envoyées avec succès.',
+        color: 'success',
+        timeout: 6000
+      } as SnackbarEntry)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      this.validateNotificationLoading = false
     }
   }
 

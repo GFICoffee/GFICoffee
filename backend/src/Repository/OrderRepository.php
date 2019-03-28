@@ -58,4 +58,20 @@ class OrderRepository extends EntityRepository
         $q = $qb->getQuery();
         return $q->getResult();
     }
+
+    function findOrdersToPayForUser(UserInterface $user)
+    {
+      $qb = $this->createQueryBuilder('e');
+      $qb->select('e')
+        ->leftJoin('e.user', 'u')
+        ->where('u.username = :username')
+        ->andWhere('e.isWaiting = :isWaiting')
+        ->andWhere('e.paid = :paid')
+        ->setParameter('username', $user->getUsername())
+        ->setParameter('isWaiting', false)
+        ->setParameter('paid', false);
+
+      $q = $qb->getQuery();
+      return $q->getResult();
+    }
 }

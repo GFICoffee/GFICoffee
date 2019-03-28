@@ -2,34 +2,108 @@
 
 namespace App\Service;
 
-use Minishlink\WebPush\WebPush;
-use Minishlink\WebPush\Subscription;
+use App\Entity\Order;
+use App\Entity\User;
+use App\Repository\OrderRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\MultipartStream;
+use GuzzleHttp\Psr7\Request;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class NotificationService
 {
-    /** @var Subscription */
-    private $subscription;
+    /** @var Client */
+    protected $httpClient;
 
-    /** @var WebPush */
-    private $webPush;
+    /** @var EntityManagerInterface */
+    protected $em;
 
-    public function __construct(WebPush $webPush)
+    /** @var string */
+    private $mailgunApiKey;
+
+    public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $em)
     {
-        $destination = json_decode(
-            '{"endpoint":"https://fcm.googleapis.com/fcm/send/fW-bN0jGFJY:APA91bFtBkvgUhgJGyHtDhpq3GOSSWHROmKu1NzHTOls6jCzWMT1wBxyfMJ9iSX0pzi_kTu7-jeWx-nglTEhlV3EPLkFIMNF8-hjgWBOINGeNkY4WpCCRUKFz6AAohQZLGFPA61oBwGj","expirationTime":null,"keys":{"p256dh":"BLAMBAClYrjoujiNxED9VOkKg_frv7gvcyhy4wEK72nK6msOZlNz9CQFpCjRsfjzi1lWnrU1zyK71NGDNCA3Y-4","auth":"Q-0Cu5fMGykg3b7NPK_mZw"}}',
-            true);
-        $destination['contentEncoding'] = 'aesgcm';
-
-        $this->subscription = Subscription::create($destination);
-        $this->webPush = $webPush;
+      $this->httpClient = new Client();
+      $this->em = $em;
+      $this->mailgunApiKey = $parameterBag->get('mailgunApiKey');
     }
 
-    public function sendNotification(string $message)
+  /**
+   * @param string $subject
+   * @param string $message
+   * @param User $to
+   * @return \GuzzleHttp\Promise\PromiseInterface
+   */
+    public function sendNotification(string $subject, string $message, User $to)
     {
-        return $this->webPush->sendNotification(
-            $this->subscription,
-            '{"msg":"MY MSG"}',
-            true
-        );
+      $multipart = new MultipartStream(array(
+        array('name' => 'from', 'contents' => 'GFI Coffee <postmaster@sandbox9be9054794694104bb6e0ecb0b5a4f73.mailgun.org>'),
+        array('name' => 'to', 'contents' => $to->getFirstname() . $to->getLastname() . '<' . $to->getEmail() .'>'),
+        array('name' => 'subject', 'contents' => $subject),
+        array('name' => 'text', 'contents' => $message)
+      ));
+      $request = new Request(
+        'POST',
+        'https://api.mailgun.net/v3/sandbox9be9054794694104bb6e0ecb0b5a4f73.mailgun.org/messages',
+        array('Authorization' => 'Basic ' . base64_encode('api:'.$this->mailgunApiKey)),
+        $multipart
+      );
+        return $this->httpClient->sendAsync($request);
+    }
+
+  /**
+   * @param string $subject
+   * @param string $message
+   * @param User[] $to
+   */
+    public function sendNotifications(string $subject, string $message, array $to)
+    {
+      /** @var PromiseInterface[] $promises */
+      $promises = [];
+      foreach ($to as $user) {
+        $promises[] = $this->sendNotification($subject, $message, $user);
+      }
+
+      foreach ($promises as $promise) {
+        $promise->wait();
+      }
+    }
+
+  /**
+   * @param User[] $to
+   */
+    public function sendPickupNotification(array $to)
+    {
+      $subject = "Votre café est arrivé !";
+      $recapTemplate = "%d %s: %g €\n";
+      $messageTemplate = "Bonjour %s,\nVotre commande de café est arrivée, vous pouvez dès maintenant venir la régler et la récupérer.\n\nMontant: %g €\n\nRécapitulatif:\n";
+
+      /** @var PromiseInterface[] $promises */
+      $promises = [];
+      foreach ($to as $user) {
+        /** @var OrderRepository $orderRepo */
+        $orderRepo = $this->em->getRepository(Order::class);
+        /** @var Order[] $orders */
+        $orders = $orderRepo->findOrdersToPayForUser($user);
+        $recapMessage = "";
+        $totalPrice = 0;
+        foreach ($orders as $order) {
+          foreach ($order->getItems() as $item) {
+            $nbCapsules30 = $item->getQuantity30() * 30;
+            $nbCapsules50 = $item->getQuantity50() * 50;
+            $capsulesPrice = ($nbCapsules30 + $nbCapsules50) * $item->getCoffee()->getUnitPrice();
+            $totalPrice += $capsulesPrice;
+            $recapMessage .= sprintf($recapTemplate, $nbCapsules30 + $nbCapsules50, $item->getCoffee()->getName(), $capsulesPrice);
+          }
+        }
+        $message = sprintf($messageTemplate, $user->getFirstname() . ' ' . $user->getLastname(), $totalPrice) . $recapMessage;
+        $promises[] = $this->sendNotification($subject, $message, $user);
+      }
+
+      foreach ($promises as $promise) {
+        $promise->wait();
+      }
     }
 }

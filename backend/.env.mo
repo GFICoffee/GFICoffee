@@ -45,3 +45,7 @@ OAUTH_TOKEN_ENDPOINT=/oauth2/v2.0/token
 OAUTH_USERINFO_ENDPOINT=https://graph.microsoft.com/oidc/userinfo
 
 WEBAPP_URL=https://{{DOCKER_DEVBOX_DOMAIN_PREFIX}}.{{DOCKER_DEVBOX_DOMAIN}}/
+###> mailgun/mailgun-php ###
+# Get your API key form https://app.mailgun.com/app/domains
+MAILGUN_API_KEY=ee98d827cccef30aff18191420097df8-e51d0a44-f76cf13d
+###< mailgun/mailgun-php ###

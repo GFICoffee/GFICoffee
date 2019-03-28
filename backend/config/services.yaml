@@ -15,6 +15,7 @@ parameters:
         tokenEndpoint: '%env(OAUTH_TOKEN_ENDPOINT)%'
         userinfoEndpoint: '%env(OAUTH_USERINFO_ENDPOINT)%'
     webappUrl: '%env(WEBAPP_URL)%'
+    mailgunApiKey: '%env(MAILGUN_API_KEY)%'
 
 services:
     # default configuration for services in *this* file
@@ -36,9 +37,9 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
-    App\Service\NotificationService:
-        arguments:
-            $webPush: '@minishlink_web_push'
+#    App\Service\NotificationService:
+#        arguments:
+#            $webPush: '@minishlink_web_push'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

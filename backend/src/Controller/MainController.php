@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Coffee;
+use App\Entity\Order;
 use App\Entity\User;
+use App\Repository\OrderRepository;
+use App\Repository\UserRepository;
 use App\Service\AuthService;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,8 +68,7 @@ class MainController extends AbstractController
      */
     public function testAction()
     {
-        $result = $this->notificationService->sendNotification('Hello world from backend API');
-        return new JsonResponse($result);
+      return "Pong";
     }
 
     /**

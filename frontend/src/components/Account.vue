@@ -97,6 +97,18 @@
           <p class="font-weight-thin font-italic caption">Cette action enverra un mail aux personnes de la liste des commandes traitées n'ayant pas encore payé pour leur
             indiquer qu'il peuvent venir retirer et payer leur commande.</p>
         </v-flex>
+        <v-flex>
+          <v-form v-model="numFactureFormValid" ref="numFactureForm">
+            <v-text-field
+              v-model="numfacture"
+              type="number"
+              label="Numéro de facture"
+              outline
+              :rules="numFactureRules"
+              required
+            />
+          </v-form>
+        </v-flex>
         <v-card-actions>
           <v-spacer/>
           <v-btn flat @click="validateNotificationDialog = false">Non</v-btn>
@@ -153,6 +165,12 @@ export default class Account extends Vue {
   validateOrdersLoading: boolean = false
   validateNotificationDialog: boolean = false
   validateNotificationLoading: boolean = false
+
+  numfacture: string = ''
+  numFactureFormValid: boolean = false
+  numFactureRules: any[] = [
+    (v: any) => !!v || 'Le numéro de facture est obligatoire'
+  ]
 
   get subheaders () {
     return [
@@ -245,21 +263,23 @@ export default class Account extends Vue {
   }
 
   async sendPickupNotification () {
-    this.validateNotificationLoading = true
-    try {
-      await this.notificationResource.sendPickupNotification()
-      this.validateNotificationDialog = false
-      this.setSnackbarEntry({
-        title: 'Notifications',
-        icon: 'mdi-send',
-        message: 'Notifications envoyées avec succès.',
-        color: 'success',
-        timeout: 6000
-      } as SnackbarEntry)
-    } catch (e) {
-      console.error(e)
-    } finally {
-      this.validateNotificationLoading = false
+    if ((this as any).$refs.numFactureForm.validate()) {
+      this.validateNotificationLoading = true
+      try {
+        await this.notificationResource.sendPickupNotification(this.numfacture)
+        this.validateNotificationDialog = false
+        this.setSnackbarEntry({
+          title: 'Notifications',
+          icon: 'mdi-send',
+          message: 'Notifications envoyées avec succès.',
+          color: 'success',
+          timeout: 6000
+        } as SnackbarEntry)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        this.validateNotificationLoading = false
+      }
     }
   }
 

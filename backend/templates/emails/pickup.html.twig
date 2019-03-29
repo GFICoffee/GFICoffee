@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Votre café est arrivé !</title>
+</head>
+<body>
+  <img
+    src="https://raw.githubusercontent.com/GFICoffee/resources/master/logo-white.png"
+    alt="Gfi Coffee logo"
+  >
+  <div>
+    {{ message | raw }}
+
+    <h4>Deux modes de règlement possibles: </h4>
+    <img
+      src="https://raw.githubusercontent.com/GFICoffee/resources/master/modes_paiement.png"
+      alt="Méthodes de paiement"
+    >
+    <p>
+      Pour le paiement par virement, merci d’indiquer dans l’objet du virement le numéro de compte client 7653301 et le numéro de facture <span style="background-color: yellow;">{{ numfacture }}</span>.
+      <br/>
+      Merci de d’adresser un justificatif de votre virement à <a href="mailto:stephanie.pelle@gfi.fr">Stéphanie Pelle</a>.
+    </p>
+    <p>
+      Pour le paiement par chèque merci de l’établir à l’ordre de Nespresso France et d’indiquer au dos de votre chèque le numéro de compte client 7653301 et le numéro de facture <span style="background-color: yellow;">{{ numfacture }}</span>.
+    </p>
+    <p>
+      Bonne journée.
+    </p>
+  </div>
+</body>
+</html>

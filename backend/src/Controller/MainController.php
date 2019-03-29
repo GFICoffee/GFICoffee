@@ -3,16 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Coffee;
-use App\Entity\Order;
 use App\Entity\User;
-use App\Repository\OrderRepository;
-use App\Repository\UserRepository;
 use App\Service\AuthService;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Minishlink\WebPush\WebPush;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations\Route;
@@ -20,6 +16,7 @@ use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
@@ -46,11 +43,11 @@ class MainController extends AbstractController
                                 JWTTokenManagerInterface $tokenManager,
                                 ParameterBagInterface $parameterBag)
     {
-        $this->em = $em;
-        $this->authService = $authService;
-        $this->notificationService = $notificationService;
-        $this->tokenManager = $tokenManager;
-        $this->parameterBag = $parameterBag;
+      $this->em = $em;
+      $this->authService = $authService;
+      $this->notificationService = $notificationService;
+      $this->tokenManager = $tokenManager;
+      $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -68,7 +65,7 @@ class MainController extends AbstractController
      */
     public function testAction()
     {
-      return "Pong";
+      return "pong";
     }
 
     /**

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Service\AuthService;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -44,17 +43,17 @@ class NotificationController extends AbstractController
    * Envoie une notification aux utilisateurs concernés pour leur demander de payer/récupérer leur commande.
    *
    * @View()
-   * @Post("/notification/pickup/send")
+   * @Post("/notification/pickup/{numfacture}/send")
    *
    * @param Request $request
    * @return mixed
    */
-  public function sendPickupNotificationAction(Request $request)
+  public function sendPickupNotificationAction(Request $request, string $numfacture)
   {
     /** @var UserRepository $userRepo */
     $userRepo = $this->em->getRepository(User::class);
     $users = $userRepo->findUsersThatHaveToPay();
-    $result = $this->notificationService->sendPickupNotification($users);
+    $result = $this->notificationService->sendPickupNotification($users, $numfacture);
     return $result;
   }
 }

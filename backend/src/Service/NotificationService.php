@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class NotificationService
@@ -23,11 +24,15 @@ class NotificationService
     /** @var string */
     private $mailgunApiKey;
 
-    public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $em)
+  /** @var EngineInterface */
+  private $twig;
+
+    public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $em, EngineInterface $twig)
     {
       $this->httpClient = new Client();
       $this->em = $em;
       $this->mailgunApiKey = $parameterBag->get('mailgunApiKey');
+      $this->twig = $twig;
     }
 
   /**
@@ -36,13 +41,13 @@ class NotificationService
    * @param User $to
    * @return \GuzzleHttp\Promise\PromiseInterface
    */
-    public function sendNotification(string $subject, string $message, User $to)
+    public function sendNotification(string $subject, string $message, User $to, $isHtml = false)
     {
       $multipart = new MultipartStream(array(
         array('name' => 'from', 'contents' => 'GFI Coffee <postmaster@sandbox9be9054794694104bb6e0ecb0b5a4f73.mailgun.org>'),
         array('name' => 'to', 'contents' => $to->getFirstname() . $to->getLastname() . '<' . $to->getEmail() .'>'),
         array('name' => 'subject', 'contents' => $subject),
-        array('name' => 'text', 'contents' => $message)
+        array('name' => $isHtml ? 'html' : 'text', 'contents' => $message)
       ));
       $request = new Request(
         'POST',
@@ -74,11 +79,11 @@ class NotificationService
   /**
    * @param User[] $to
    */
-    public function sendPickupNotification(array $to)
+    public function sendPickupNotification(array $to, string $numfacture)
     {
       $subject = "Votre café est arrivé !";
-      $recapTemplate = "%d %s: %g €\n";
-      $messageTemplate = "Bonjour %s,\nVotre commande de café est arrivée, vous pouvez dès maintenant venir la régler et la récupérer.\n\nMontant: %g €\n\nRécapitulatif:\n";
+      $recapTemplate = "%d %s: %g €<br/>";
+      $messageTemplate = "Bonjour %s,<br/>Votre commande de café est arrivée, vous pouvez dès maintenant venir la régler et la récupérer.<br/><br/>Montant: %g €<br/><br/>Récapitulatif:<br/>";
 
       /** @var PromiseInterface[] $promises */
       $promises = [];
@@ -99,7 +104,11 @@ class NotificationService
           }
         }
         $message = sprintf($messageTemplate, $user->getFirstname() . ' ' . $user->getLastname(), $totalPrice) . $recapMessage;
-        $promises[] = $this->sendNotification($subject, $message, $user);
+        $html = $this->twig->render('emails/pickup.html.twig', array(
+          'message' => $message,
+          'numfacture' => $numfacture
+        ));
+        $promises[] = $this->sendNotification($subject, $html, $user, true);
       }
 
       foreach ($promises as $promise) {

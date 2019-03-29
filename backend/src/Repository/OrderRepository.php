@@ -74,4 +74,20 @@ class OrderRepository extends EntityRepository
       $q = $qb->getQuery();
       return $q->getResult();
     }
+
+    function findLastWaitingOrderForUser(UserInterface $user)
+    {
+      $qb = $this->createQueryBuilder('e');
+      $qb->select('e')
+        ->leftJoin('e.user', 'u')
+        ->where('u.username = :username')
+        ->andWhere('e.isWaiting = :isWaiting')
+        ->orderBy('e.id', 'DESC')
+        ->setMaxResults(1)
+        ->setParameter('username', $user->getUsername())
+        ->setParameter('isWaiting', true);
+
+      $q = $qb->getQuery();
+      return $q->getOneOrNullResult();
+    }
 }

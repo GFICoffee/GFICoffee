@@ -59,16 +59,33 @@ class OrdersController extends AbstractController
         $userRepo = $this->em->getRepository(User::class);
         /** @var EntityRepository $coffeeRepo */
         $coffeeRepo = $this->em->getRepository(Coffee::class);
-        $order = new Order();
-        $order->setUser($userRepo->findOneByUsername($user->getUsername()));
-        $order->setItems(new ArrayCollection());
+        /** @var OrderRepository $orderRepo */
+        $orderRepo = $this->em->getRepository(Order::class);
+        $order = $orderRepo->findLastWaitingOrderForUser($user);
+        if (!$order) {
+          $order = new Order();
+          $order->setUser($userRepo->findOneByUsername($user->getUsername()));
+          $order->setItems(new ArrayCollection());
+        }
+
+        function findOrderedCoffeeWithCoffeeId(Order $order, int $id) {
+          foreach ($order->getItems() as $orderedCoffee) {
+            if ($orderedCoffee->getCoffee()->getId() === $id) {
+              return $orderedCoffee;
+            }
+          }
+          return NULL;
+        }
 
         foreach ($data->getItems() as $item) {
-            $orderedCoffee = new OrderedCoffee();
-            $orderedCoffee->setOrder($order);
-            $orderedCoffee->setCoffee($coffeeRepo->find($item->getId()));
-            $orderedCoffee->setQuantity30($item->getQuantity30());
-            $orderedCoffee->setQuantity50($item->getQuantity50());
+            $orderedCoffee = findOrderedCoffeeWithCoffeeId($order, $item->getId());
+            if (!$orderedCoffee) {
+              $orderedCoffee = new OrderedCoffee();
+              $orderedCoffee->setOrder($order);
+              $orderedCoffee->setCoffee($coffeeRepo->find($item->getId()));
+            }
+            $orderedCoffee->setQuantity30($item->getQuantity30() + $orderedCoffee->getQuantity30());
+            $orderedCoffee->setQuantity50($item->getQuantity50() + $orderedCoffee->getQuantity50());
             $order->getItems()->add($orderedCoffee);
         }
 

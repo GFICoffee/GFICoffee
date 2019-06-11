@@ -17,3 +17,6 @@ services:
       - reverse-proxy
     volumes:
       - "${COMPOSE_PROJECT_DIR}/.docker/mailcatcher/ssmtp.conf:/etc/ssmtp/ssmtp.conf:ro"
+  db:
+    ports:
+      - '${DOCKER_DEVBOX_PORT_PREFIX}06:3306'

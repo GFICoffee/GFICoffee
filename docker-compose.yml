@@ -27,7 +27,7 @@ services:
       - MYSQL_PASSWORD=gficoffee
     volumes:
       - '${COMPOSE_PROJECT_DIR}:/workdir'
-      - 'db-data:/var/lib/mysql'
+      - 'mysql:/var/lib/mysql'
     user: '${USER_ID}:${GROUP_ID}'
   node:
     build:
@@ -42,6 +42,6 @@ services:
     user: '${USER_ID}:${GROUP_ID}'
 volumes:
   web-composer-cache: null
-  db-data: null
+  mysql: null
   node-cache: null
   node-npm-packages: null

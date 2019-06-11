@@ -1,9 +1,12 @@
 /docker-compose.override.yml
-/.docker/mailcatcher/ssmtp.conf
+/.docker-compose.resolved.yml
+/.docker-compose.*.resolved.yml
 /.docker/.ca-certificates
-/.docker/**/Dockerfile
+/.docker-compose.env
+/.docker/*/Dockerfile
+/.docker/web/apache.conf
+/.docker/fixuid.tar.gz
 /.init/
 /.bash_enter.env
-/frontend/src/environments/*
-!/frontend/src/environments/*.mo.*
-/frontend/vue.config.settings.default.js
+/.traefik/*.ssl.toml
+/.certs

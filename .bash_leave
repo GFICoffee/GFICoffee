@@ -1,14 +1,24 @@
 #!/usr/bin/env bash
 
-if [[ $(basename "$BASH_SOURCE") = .bash_leave ]]; then
-  DOCKER_DEVBOX_DIR=$(dirname "$BASH_SOURCE")
-else
-  DOCKER_DEVBOX_DIR=$PWD
+SOURCE="$0"
+if [ "$SOURCE" = "-bash" ]; then
+  SOURCE="${BASH_SOURCE[0]}"
 fi
-export DOCKER_DEVBOX_DIR=$DOCKER_DEVBOX_DIR
 
-if [ -d "$DOCKER_DEVBOX_DIR"/.bash_leave.d ]; then
-  for leave_script in "$DOCKER_DEVBOX_DIR"/.bash_leave.d/*; do
-    source $leave_script
-  done
+if [[ ! -v "${DOCKER_DEVBOX_DIR}" ]]; then
+  if [ "$(basename "$SOURCE")" = ".bash_leave" ]; then
+    DOCKER_DEVBOX_DIR="$(readlink -f "$SOURCE" | xargs dirname)"
+  else
+    DOCKER_DEVBOX_DIR="$PWD"
+  fi
+fi
+
+DOCKER_DEVBOX_HOME_STAGING="${DOCKER_DEVBOX_HOME:-$HOME/.docker-devbox}"
+DOCKER_DEVBOX_SCRIPTS_PATH_STAGING="${DOCKER_DEVBOX_SCRIPTS_PATH:-$DOCKER_DEVBOX_HOME_STAGING/scripts}"
+
+if [ -e "${DOCKER_DEVBOX_SCRIPTS_PATH_STAGING}" ]; then
+  . "${DOCKER_DEVBOX_SCRIPTS_PATH_STAGING}"/.bash_leave.global
+else
+  echo "$(tput setaf 1)docker-devbox doesn't seems to be installed ($DOCKER_DEVBOX_SCRIPTS_PATH_STAGING is missing). Check your docker-devbox installation.$(tput sgr0)"
+  echo "$(tput setaf 3)More information at https://github.com/gfi-centre-ouest/docker-devbox$(tput sgr0)"
 fi

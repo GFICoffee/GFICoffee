@@ -19,5 +19,36 @@
       "sonarScannerContainer": false,
       "drupalInit": false
     }
+  },
+  "@gfi-centre-ouest/generator-docker-devbox": {
+    "promptValues": {
+      "projectName": "GFICoffee",
+      "authorName": "Victor Castro-Cintas",
+      "authorEmail": "victor.castro-cintas@gfi.fr",
+      "features~0": [
+        "php-apache",
+        "mysql",
+        "node",
+        "mailcatcher"
+      ],
+      "features~0~php-apache~phpVersion": "7.2",
+      "features~0~php-apache~phpExtensions": [
+        "xdebug"
+      ],
+      "features~0~php-apache~phpTools": [
+        "composer"
+      ],
+      "features~0~php-apache~apacheExtensions": [
+        "rewrite"
+      ],
+      "features~0~mysql~mysqlVersion": "5.7",
+      "features~0~node~nodeVersion": "8",
+      "features~0~node~nodeTools": [
+        "@vue/cli"
+      ],
+      "features~0~more": false,
+      "features~1~php-apache~nativeClientMySQL": null,
+      "portPrefix": "20"
+    }
   }
 }

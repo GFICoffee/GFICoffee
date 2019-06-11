@@ -35,7 +35,6 @@ services:
       dockerfile: node/Dockerfile
     image: '${DOCKER_DEVBOX_REGISTRY}${DOCKER_DEVBOX_REGISTRY_REPOSITORY}/node'
     init: true
-    restart: '${DOCKER_DEVBOX_RESTART_POLICY}'
     volumes:
       - '${COMPOSE_PROJECT_DIR}:/app'
       - 'node-cache:/home/node/.cache'

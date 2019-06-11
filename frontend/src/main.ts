@@ -27,7 +27,6 @@ if (URLSearchParams) {
   }
 }
 
-Vue.config.productionTip = false
 Vue.use(Vuetify, {
   theme: {
     primary: '#ff9c34',

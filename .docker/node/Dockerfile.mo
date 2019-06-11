@@ -1,12 +1,11 @@
-FROM node:carbon
-LABEL maintainer="Victor Castro-Cintas <victor.castro.cintas@gmail.com>"
+FROM node:8
+LABEL maintainer="Victor Castro-Cintas <victor.castro-cintas@gfi.fr>"
+{{#DOCKER_DEVBOX_COPY_CA_CERTIFICATES}}
 
-{{#DOCKER_DEVBOX_CA_CERTIFICATES}}
 COPY .ca-certificates/* /usr/local/share/ca-certificates/
 RUN update-ca-certificates
-{{/DOCKER_DEVBOX_CA_CERTIFICATES}}
-
 ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+{{/DOCKER_DEVBOX_COPY_CA_CERTIFICATES}}
 
 # Mise à jour de npm
 RUN npm i --global npm
@@ -15,12 +14,12 @@ RUN npm i --global npm
 RUN apt-get update -y && apt-get install -y libcap2-bin && rm -rf /var/lib/apt/lists/* \
 && setcap 'cap_net_bind_service=+ep' $(which node)
 
-# Fix permissions to match host user
-RUN usermod -u ${HOST_UID:-1000} node && groupmod -g ${HOST_GID:-1000} node
-
-RUN mkdir /home/node/.npm-packages && chown -R ${HOST_UID:-1000}:${HOST_GID:-1000} /home/node/.npm-packages
-RUN mkdir -p /home/node/.cache/yarn && chown -R ${HOST_UID:-1000}:${HOST_GID:-1000} /home/node/.cache
-RUN mkdir /app && chown -R ${HOST_UID:-1000}:${HOST_GID:-1000} /app
+# fixuid
+ADD fixuid.tar.gz /usr/local/bin
+RUN chown root:root /usr/local/bin/fixuid && \
+    chmod 4755 /usr/local/bin/fixuid && \
+    mkdir -p /etc/fixuid
+COPY node/fixuid.yml /etc/fixuid/config.yml
 
 WORKDIR /app
 
@@ -30,7 +29,8 @@ RUN yarn config set cafile ${NODE_EXTRA_CA_CERTS} --global
 RUN npm config set prefix /home/node/.npm-packages
 ENV PATH="${PATH}:/home/node/.npm-packages/bin"
 
-VOLUME /app
-VOLUME /home/node/.npm-packages
-VOLUME /home/node/.cache
 
+RUN npm install -g @vue/cli
+
+VOLUME /app
+VOLUME /home/node/.cache

@@ -1,46 +1,48 @@
-version: "2.2"
+version: '2.2'
 services:
   web:
     build:
       context: .docker
-      dockerfile: php/Dockerfile
-    image: ${DOCKER_DEVBOX_REGISTRY}gficoffee/web
+      dockerfile: web/Dockerfile
+    image: '${DOCKER_DEVBOX_REGISTRY}${DOCKER_DEVBOX_REGISTRY_REPOSITORY}/web'
     init: true
-    restart: ${DOCKER_DEVBOX_RESTART_POLICY}
+    restart: '${DOCKER_DEVBOX_RESTART_POLICY}'
     volumes:
-      - "${COMPOSE_PROJECT_DIR}:/var/www/html"
-      - "${COMPOSE_PROJECT_DIR}/.docker/php/apache.conf:/etc/apache2/sites-enabled/000-default.conf"
-      - "composer-cache:/composer/cache"
+      - '${COMPOSE_PROJECT_DIR}:/var/www/html'
+      - '${COMPOSE_PROJECT_DIR}/.docker/web/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini'
+      - 'web-composer-cache:/composer/cache'
+      - '${COMPOSE_PROJECT_DIR}/.docker/web/apache.conf:/etc/apache2/sites-enabled/000-default.conf'
+    user: '${USER_ID}:${GROUP_ID}'
   db:
     build:
       context: .docker
-      dockerfile: mysql/Dockerfile
-    image: ${DOCKER_DEVBOX_REGISTRY}gficoffee/mysql
+      dockerfile: db/Dockerfile
+    image: '${DOCKER_DEVBOX_REGISTRY}${DOCKER_DEVBOX_REGISTRY_REPOSITORY}/db'
     init: true
-    restart: ${DOCKER_DEVBOX_RESTART_POLICY}
+    restart: '${DOCKER_DEVBOX_RESTART_POLICY}'
     environment:
       - MYSQL_ROOT_PASSWORD=gficoffee
       - MYSQL_DATABASE=gficoffee
       - MYSQL_USER=gficoffee
       - MYSQL_PASSWORD=gficoffee
     volumes:
-      - "${COMPOSE_PROJECT_DIR}:/workdir" # Mount this volume to help loading/exporting dumps
-      - "mysql:/var/lib/mysql/"
+      - '${COMPOSE_PROJECT_DIR}:/workdir'
+      - 'db-data:/var/lib/mysql'
+    user: '${USER_ID}:${GROUP_ID}'
   node:
     build:
       context: .docker
       dockerfile: node/Dockerfile
-      args:
-        GROUP_ID: "${GROUP_ID}"
-        USER_ID: "${USER_ID}"
-    image: ${DOCKER_DEVBOX_REGISTRY}gficoffee/node
+    image: '${DOCKER_DEVBOX_REGISTRY}${DOCKER_DEVBOX_REGISTRY_REPOSITORY}/node'
     init: true
+    restart: '${DOCKER_DEVBOX_RESTART_POLICY}'
     volumes:
-      - "${COMPOSE_PROJECT_DIR}:/app"
-      - "node-cache:/home/node/.cache"
-      - "node-npm-packages:/home/node/.npm-packages"
+      - '${COMPOSE_PROJECT_DIR}:/app'
+      - 'node-cache:/home/node/.cache'
+      - 'node-npm-packages:/home/node/.npm-packages'
+    user: '${USER_ID}:${GROUP_ID}'
 volumes:
-  composer-cache:
-  mysql:
-  node-cache:
-  node-npm-packages:
+  web-composer-cache: null
+  db-data: null
+  node-cache: null
+  node-npm-packages: null

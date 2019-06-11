@@ -4,6 +4,7 @@
 /.docker/.ca-certificates
 /.docker-compose.env
 /.docker/*/Dockerfile
+/.docker/web/apache.conf
 /.docker/fixuid.tar.gz
 /.init/
 /.bash_enter.env

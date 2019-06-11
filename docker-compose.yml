@@ -28,7 +28,6 @@ services:
     volumes:
       - '${COMPOSE_PROJECT_DIR}:/workdir'
       - 'mysql:/var/lib/mysql'
-    user: '${USER_ID}:${GROUP_ID}'
   node:
     build:
       context: .docker

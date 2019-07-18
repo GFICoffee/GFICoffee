@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 . "$DOCKER_DEVBOX_SCRIPTS_PATH/.bash.lib.d/50-docker"
 
-run --workdir="$(_docker_workdir "/app")" node npm "$@"
+if [[ "$1" == "serve" ]] || [[ "$1" == "run" ]] && [[ "$2" == "serve" ]]; then
+  _RUN_REVERSE_PROXY_ENABLE=1 run --workdir="$(_docker_workdir "/app")" node npm "$@"
+else
+  run --workdir="$(_docker_workdir "/app")" node npm "$@"
+fi

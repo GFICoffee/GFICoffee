@@ -129,7 +129,8 @@ class MainController extends AbstractController
         /** @var UserInterface|null $user */
         $user = $userRepo->findOneBySub($userInfo['sub']);
 
-        if (!array_key_exists('email', $userInfo) || getMailDomain($userInfo['email']) !== 'gfi.fr') {
+        $mailDomain = array_key_exists('email', $userInfo) ? getMailDomain($userInfo['email']) : NULL;
+        if ($mailDomain !== 'gfi.fr' && $mailDomain !== 'gfi.world') {
             throw new \Exception('Vous devez utiliser une adresse email GFI pour vous connecter !');
         }
 

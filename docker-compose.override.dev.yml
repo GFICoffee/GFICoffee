@@ -1,32 +1,12 @@
-version: '2.2'
+version: '3.7'
 services:
   web:
     environment:
       - 'XDEBUG_CONFIG=idekey=gficoffee remote_host=${HOST_IP}'
       - 'PHP_IDE_CONFIG=serverName=gficoffee'
-      - 'VIRTUAL_HOST=sf.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
-      - VIRTUAL_PORT=80
-    networks:
-      - default
-      - reverse-proxy
-    labels:
-      - traefik.enable=true
-      - 'traefik.frontend.rule=Host:sf.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
-      - traefik.port=80
   db:
     ports:
       - '${DOCKER_DEVBOX_PORT_PREFIX}06:3306'
-  node:
-    environment:
-      - VIRTUAL_HOST=${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}
-      - VIRTUAL_PORT=80
-    labels:
-      - traefik.enable=true
-      - 'traefik.frontend.rule=Host:${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
-      - traefik.port=80
-    networks:
-      - default
-      - reverse-proxy
   mailcatcher:
     build:
       context: .docker
@@ -34,17 +14,3 @@ services:
     image: '${DOCKER_DEVBOX_REGISTRY}${DOCKER_DEVBOX_REGISTRY_REPOSITORY}/mailcatcher'
     init: true
     restart: '${DOCKER_DEVBOX_RESTART_POLICY}'
-    networks:
-      - default
-      - reverse-proxy
-    labels:
-      - traefik.enable=true
-      - 'traefik.frontend.rule=Host:mailcatcher.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
-      - traefik.port=80
-    environment:
-      - 'VIRTUAL_HOST=mailcatcher.${DOCKER_DEVBOX_DOMAIN_PREFIX}.${DOCKER_DEVBOX_DOMAIN}'
-      - VIRTUAL_PORT=80
-networks:
-  reverse-proxy:
-    name: '${DOCKER_DEVBOX_REVERSE_PROXY_NETWORK}'
-    external: true

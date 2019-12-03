@@ -32,10 +32,8 @@ RUN curl -fsSL -o /tmp/composer-setup.php https://getcomposer.org/installer \
 && composer global require hirak/prestissimo
 
 
-RUN apt-get update -y && apt-get install -y ssmtp && rm -rf /var/lib/apt/lists/* \
-&& echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf \
-&& echo "mailhub=mailcatcher.{{COMPOSE_NETWORK_NAME}}" >> /etc/ssmtp/ssmtp.conf \
-&& echo 'sendmail_path = "/usr/sbin/ssmtp -t"' > /usr/local/etc/php/conf.d/mail.ini
+RUN apt-get update -y && apt-get install -y msmtp msmtp-mta && rm -rf /var/lib/apt/lists/* \
+&& echo 'sendmail_path = "/usr/sbin/sendmail -t -i"' > /usr/local/etc/php/conf.d/mail.ini
 
 RUN apt-get update -y
 RUN apt-get install -y libgmp-dev re2c libmhash-dev libmcrypt-dev file

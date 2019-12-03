@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.7'
 services:
   web:
     build:
@@ -12,6 +12,7 @@ services:
       - '${COMPOSE_PROJECT_DIR}/.docker/web/php-config.ini:/usr/local/etc/php/conf.d/php-config.ini'
       - 'web-composer-cache:/composer/cache'
       - '${COMPOSE_PROJECT_DIR}/.docker/web/apache.conf:/etc/apache2/sites-enabled/000-default.conf'
+      - '${COMPOSE_PROJECT_DIR}/.docker/web/msmtprc:/etc/msmtprc'
     user: '${USER_ID}:${GROUP_ID}'
   db:
     build:

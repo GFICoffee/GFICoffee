@@ -9,7 +9,6 @@
       <template slot="headers" slot-scope="props"></template>
       <v-progress-linear slot="progress" color="white" indeterminate/>
       <template slot="items" slot-scope="props">
-        <div v-show="false" v-if="props">{{ props.expanded = value.length === 1 }}</div>
         <tr @click="props.expanded = !props.expanded" class="pointer">
           <td>
             <v-layout>

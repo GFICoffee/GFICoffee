@@ -1,4 +1,4 @@
-version: "2.2"
+version: "3.7"
 networks:
   reverse-proxy:
     name: '${DOCKER_DEVBOX_REVERSE_PROXY_NETWORK}'

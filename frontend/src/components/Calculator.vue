@@ -2,7 +2,7 @@
   <v-layout justify-center class="calculator">
     <v-flex md9 xs12>
       <v-layout column>
-        <v-flex v-for="(coffee, i) of selectedCoffee" :key="i" class="coffee-choice pt-4 pb-2">
+        <v-flex v-for="(coffee, i) of selectedCoffeeList" :key="i" class="coffee-choice pt-4 pb-2">
           <v-layout>
             <v-flex>
               <h2 class="white--text">{{ coffee.name }}</h2>
@@ -33,10 +33,10 @@
               />
             </v-flex>
             <v-flex shrink>
-              <h3 class="white--text">{{ coffePrice(coffee).toFixed(2) }}&nbsp;€</h3>
+              <h3 class="white--text">{{ coffeePrice(coffee).toFixed(2) }}&nbsp;€</h3>
             </v-flex>
             <v-flex shrink>
-              <v-icon class="ml-3" @click="removeCoffee(coffee)">mdi-close</v-icon>
+              <v-icon class="ml-3" @click="unselectCoffee(coffee)">mdi-close</v-icon>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -76,12 +76,13 @@
   </v-layout>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Watch, Inject } from 'vue-property-decorator'
+import { Vue, Component, Inject } from 'vue-property-decorator'
 import Coffee from '@/api/model/Coffee'
 import OrderResource from '@/api/Order'
 import OrderDto from '@/api/model/OrderDto'
 import filter from 'lodash/filter'
 import { MutationSnackbar, SnackbarEntry } from '@/store/snackbar'
+import { GetterCoffee, MutationCoffee } from '@/store/coffee'
 
 @Component
 export default class Calculator extends Vue {
@@ -90,24 +91,45 @@ export default class Calculator extends Vue {
 
   @MutationSnackbar
   setSnackbarEntry!: (entry: SnackbarEntry) => void
+  @GetterCoffee
+  selectedCoffeeList!: Coffee[]
+  @MutationCoffee
+  resetCoffeeSelection!: () => void
+  @MutationCoffee
+  unselectCoffee!: (coffee: Coffee) => void
 
-  @Prop({ type: Array, default: () => [] })
-  value!: Coffee[]
-
-  selectedCoffee: Coffee[] = []
   quantities: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   confirmDialog: boolean = false
   orderLoading: boolean = false
 
-  removeCoffee (coffee: Coffee) {
-    const index = this.selectedCoffee.indexOf(coffee)
-    if (index >= 0) {
-      this.selectedCoffee.splice(index, 1)
-      this.$emit('input', this.selectedCoffee)
+  get totalPrice (): number {
+    let total = 0
+
+    for (const coffee of this.selectedCoffeeList) {
+      total += this.coffeePrice(coffee)
     }
+    return total
   }
 
-  coffePrice (coffee: Coffee): number {
+  get canOrder (): boolean {
+    let canOrder: boolean = true
+
+    if (this.selectedCoffeeList.length === 0) {
+      canOrder = false
+    } else {
+      for (let coffee of this.selectedCoffeeList) {
+        if (!coffee.quantity30 && !coffee.quantity50) {
+          canOrder = false
+        } else if (this.selectedCoffeeList.length > 1 && (coffee.quantity30 || coffee.quantity50)) {
+          canOrder = true
+          break
+        }
+      }
+    }
+    return canOrder
+  }
+
+  coffeePrice (coffee: Coffee): number {
     let total: number = 0
 
     if (coffee.quantity30 && coffee.unit_price) {
@@ -120,38 +142,11 @@ export default class Calculator extends Vue {
     return total
   }
 
-  get totalPrice (): number {
-    let total = 0
-
-    for (const coffee of this.selectedCoffee) {
-      total += this.coffePrice(coffee)
-    }
-    return total
-  }
-
-  get canOrder (): boolean {
-    let canOrder: boolean = true
-
-    if (this.selectedCoffee.length === 0) {
-      canOrder = false
-    } else {
-      for (let coffee of this.selectedCoffee) {
-        if (!coffee.quantity30 && !coffee.quantity50) {
-          canOrder = false
-        } else if (this.selectedCoffee.length > 1 && (coffee.quantity30 || coffee.quantity50)) {
-          canOrder = true
-          break
-        }
-      }
-    }
-    return canOrder
-  }
-
   async order () {
     this.orderLoading = true
     try {
       const order: OrderDto = {
-        items: filter<Coffee[]>(this.selectedCoffee, function (coffee: Coffee) {
+        items: filter<Coffee[]>(this.selectedCoffeeList, function (coffee: Coffee) {
           return coffee.quantity30 || coffee.quantity50
         }) as Coffee[],
         paid: false
@@ -169,16 +164,8 @@ export default class Calculator extends Vue {
     } finally {
       this.orderLoading = false
       this.confirmDialog = false
-      for (const coffee of this.selectedCoffee) {
-        coffee.selected = false
-      }
-      this.$emit('input', [])
+      this.resetCoffeeSelection()
     }
-  }
-
-  @Watch('value', { immediate: true })
-  onValueChanged (newVal: Coffee[]) {
-    this.selectedCoffee = newVal
   }
 }
 </script>

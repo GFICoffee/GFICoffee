@@ -22,7 +22,7 @@
           </v-layout>
         </v-flex>
         <v-flex shrink v-for="(coffee, i) of coffeeList" :key="i" v-else>
-          <coffee-tile v-model="coffeeList[i]"/>
+          <coffee-tile :coffee="coffee"/>
         </v-flex>
       </v-layout>
     </v-flex>
@@ -34,6 +34,7 @@ import CoffeeTile from '@/components/CoffeeTile.vue'
 import Coffee from '@/api/model/Coffee'
 import filter from 'lodash/filter'
 import CoffeeResource from '@/api/Coffee'
+import { GetterCoffee, MutationCoffee } from '@/store/coffee'
 
 @Component({
   components: {
@@ -43,23 +44,17 @@ import CoffeeResource from '@/api/Coffee'
 export default class CoffeeGrid extends Vue {
   @Inject()
   coffeeResource!: CoffeeResource
+  @GetterCoffee
+  coffeeList!: Coffee[]
+  @MutationCoffee
+  setCoffeeList!: (list: Coffee[]) => void
 
-  coffeeList: Coffee[] = []
   loadingList: boolean = false
-
-  get selectedCoffee (): Coffee[] {
-    return filter(this.coffeeList, ['selected', true])
-  }
-
-  @Watch('selectedCoffee')
-  onCoffeeListChanged () {
-    this.$emit('input', this.selectedCoffee)
-  }
 
   async created () {
     this.loadingList = true
     try {
-      this.coffeeList = await this.coffeeResource.getCoffeeList()
+      this.setCoffeeList(await this.coffeeResource.getCoffeeList())
     } catch (e) {
       console.error(e)
     } finally {

@@ -1,74 +1,81 @@
 <template>
   <v-card class="account pb-2 px-3" color="secondary lighten-1">
     <v-card-title class="headline white--text">Mon compte</v-card-title>
-    <v-flex>
-      <v-layout column>
-        <v-flex class="user-waiting-orders">
+    <v-col>
+      <v-row no-gutters>
+        <v-col cols="12" class="user-waiting-orders">
           <h3 class="white--text thin mb-2">Mes commandes en cours</h3>
           <orders-table :value="waitingOrders" :loading="waitingOrdersLoading" @delete="deleteOrder"/>
-        </v-flex>
+        </v-col>
 
-        <v-flex class="not-waiting-orders">
+        <v-col cols="12" class="not-waiting-orders">
           <h3 class="white--text thin mb-2 mt-3">Toutes mes commandes traitées</h3>
           <orders-table :value="notWaitingOrders" :loading="notWaitingOrdersLoading" :canDelete="false"/>
-        </v-flex>
+        </v-col>
 
-        <v-flex class="all-waiting-orders" v-if="isAdmin">
-          <v-layout class="my-4">
-            <v-flex>
+        <v-col cols="12" class="all-waiting-orders" v-if="isAdmin">
+          <v-row no-gutters class="my-4">
+            <v-col cols="12">
               <hr/>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout class="mb-2">
-            <v-flex shrink>
+          <v-row no-gutters class="mb-2">
+            <v-col cols="auto">
               <h3 class="white--text thin">Toutes les commandes en cours</h3>
-            </v-flex>
+            </v-col>
             <v-spacer/>
-            <v-flex shrink>
+            <v-col cols="auto">
               <v-tooltip top>
-                <v-icon color="white" slot="activator" @click="exportAllWaitingOrders()"
-                        :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-file-export
-                </v-icon>
+                <template v-slot:activator="{ on }">
+                  <v-icon color="white" v-on="on" @click="exportAllWaitingOrders()"
+                          :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-file-export
+                  </v-icon>
+                </template>
                 <span>Exporter</span>
               </v-tooltip>
-            </v-flex>
-            <v-flex shrink class="ml-3">
+            </v-col>
+            <v-col cols="auto" class="ml-3">
               <v-tooltip top>
-                <v-icon color="white" slot="activator" @click="validateOrdersDialog = true"
-                        :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">
-                  mdi-checkbox-multiple-marked
-                </v-icon>
+                <template v-slot:activator="{ on }">
+                  <v-icon color="white" v-on="on" @click="validateOrdersDialog = true"
+                          :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">
+                    mdi-checkbox-multiple-marked
+                  </v-icon>
+                </template>
                 <span>Valider toutes les commandes</span>
               </v-tooltip>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
           <orders-table :value="allWaitingOrders" :loading="allWaitingOrdersLoading" @delete="deleteOrder"/>
-        </v-flex>
+        </v-col>
 
-        <v-flex class="all-not-waiting-orders" v-if="isAdmin">
-          <v-layout class="mb-2 mt-3">
-            <v-flex shrink>
+        <v-col cols="12" class="all-not-waiting-orders" v-if="isAdmin">
+          <v-row no-gutters class="mb-2 mt-3">
+            <v-col cols="auto">
               <h3 class="white--text thin">Toutes les commandes traitées</h3>
-            </v-flex>
+            </v-col>
             <v-spacer/>
-            <v-flex shrink>
+            <v-col cols="auto">
               <v-tooltip top>
-                <v-icon color="white" slot="activator" @click="validateNotificationDialog = true"
-                        :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0">mdi-send
-                </v-icon>
+                <template v-slot:activator="{ on }">
+                  <v-icon color="white" v-on="on" @click="validateNotificationDialog = true"
+                          :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0" disabled>mdi-send
+                  </v-icon>
+                </template>
                 <span>Notifier la réception</span>
               </v-tooltip>
-            </v-flex>
-          </v-layout>
-          <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" :canDelete="false" :payControl="true" @update="updateOrder"/>
-        </v-flex>
-      </v-layout>
-    </v-flex>
+            </v-col>
+          </v-row>
+          <orders-table :value="allNotWaitingOrders" :loading="allNotWaitingOrdersLoading" :canDelete="false"
+                        :payControl="true" @update="updateOrder"/>
+        </v-col>
+      </v-row>
+    </v-col>
     <v-card-actions>
       <v-spacer/>
-      <v-btn outline @click="$emit('close')">
+      <v-btn outlined @click="$emit('close')">
         Fermer
       </v-btn>
     </v-card-actions>
@@ -76,15 +83,17 @@
     <v-dialog v-model="validateOrdersDialog" width="500">
       <v-card color="secondary lighten-1 pb-2 px-3">
         <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
-        <v-flex class="white--text">
+        <v-col class="white--text">
           Êtes-vous sûr de vouloir valider toutes les commandes en attente ?<br/>
           Pensez à <span class="font-weight-bold green--text">exporter</span> les données avant de les valider.
-        </v-flex>
+        </v-col>
         <v-card-actions>
-          <v-btn flat :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0" @click="exportAllWaitingOrders()">Exporter</v-btn>
+          <v-btn text :disabled="allWaitingOrdersLoading || allWaitingOrders.length === 0"
+                 @click="exportAllWaitingOrders()">Exporter
+          </v-btn>
           <v-spacer/>
-          <v-btn flat @click="validateOrdersDialog = false">Non</v-btn>
-          <v-btn outline @click="validateAllWaitingOrders()" :loading="validateOrdersLoading">Oui</v-btn>
+          <v-btn text @click="validateOrdersDialog = false">Non</v-btn>
+          <v-btn outlined @click="validateAllWaitingOrders()" :loading="validateOrdersLoading">Oui</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -92,27 +101,28 @@
     <v-dialog v-model="validateNotificationDialog" width="500">
       <v-card color="secondary lighten-1 pb-2 px-3">
         <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
-        <v-flex class="white--text">
+        <v-col class="white--text">
           <p>Êtes-vous sûr de vouloir notifier les personnes dont les commandes viennent d'arriver ?</p>
-          <p class="font-weight-thin font-italic caption">Cette action enverra un mail aux personnes de la liste des commandes traitées n'ayant pas encore payé pour leur
+          <p class="font-weight-thin font-italic caption">Cette action enverra un mail aux personnes de la liste des
+            commandes traitées n'ayant pas encore payé pour leur
             indiquer qu'il peuvent venir retirer et payer leur commande.</p>
-        </v-flex>
-        <v-flex>
+        </v-col>
+        <v-col>
           <v-form v-model="numFactureFormValid" ref="numFactureForm">
             <v-text-field
               v-model="numfacture"
               type="number"
               label="Numéro de facture"
-              outline
+              outlined
               :rules="numFactureRules"
               required
             />
           </v-form>
-        </v-flex>
+        </v-col>
         <v-card-actions>
           <v-spacer/>
-          <v-btn flat @click="validateNotificationDialog = false">Non</v-btn>
-          <v-btn outline @click="sendPickupNotification()" :loading="validateNotificationLoading">Oui</v-btn>
+          <v-btn text @click="validateNotificationDialog = false">Non</v-btn>
+          <v-btn outlined @click="sendPickupNotification()" :loading="validateNotificationLoading">Oui</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

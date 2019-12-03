@@ -2,15 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import '@mdi/font/css/materialdesignicons.min.css'
-import fr from 'vuetify/src/locale/fr'
 import './styles/fonts.css'
 import './styles/global.css'
 import services from './services'
 import './registerServiceWorker'
+import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 
@@ -27,23 +23,13 @@ if (URLSearchParams) {
   }
 }
 
-Vue.use(Vuetify, {
-  theme: {
-    primary: '#ff9c34',
-    secondary: { base: '#000000', lighten1: '#111111', lighten2: '#262626', lighten3: '#707070' }
-  },
-  lang: {
-    locales: { fr },
-    current: 'fr'
-  }
-});
-
 (Vue as any).prototype.$utils = {
   console: console
 }
 
 // tslint:disable-next-line:no-unused-expression
 new Vue({
+  vuetify,
   router,
   store,
   provide: { ...services },

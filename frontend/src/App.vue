@@ -1,13 +1,13 @@
 <template>
-  <v-app id="app" class="secondary" dark>
-    <v-layout column wrap>
-      <v-flex shrink>
+  <v-app id="app" dark style="background-color: black;">
+    <v-row no-gutters>
+      <v-col cols="12">
         <navigator/>
-      </v-flex>
-      <v-flex>
+      </v-col>
+      <v-col cols="12">
         <router-view/>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <snackbar/>
   </v-app>

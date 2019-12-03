@@ -1,50 +1,49 @@
 <template>
-
-  <v-hover>
+  <v-hover v-slot:default="{ hover }">
     <v-responsive
         :aspect-ratio="91/145"
         width="182px"
         class="coffee-tile secondary"
-        slot-scope="{ hover }"
         :class="`lighten-${ hover || coffee.selected ? 2 : 1 }`"
         @click="toggleCoffeeSelection(coffee)"
     >
-      <v-layout column fill-height>
-        <v-flex shrink>
+      <v-row no-gutters class="fill-height">
+        <v-col cols="12">
           <v-responsive :aspect-ratio="1/1">
             <img :src="coffee.img" :alt="`${coffee.name} image`" class="coffee-img">
           </v-responsive>
-        </v-flex>
-        <v-flex class="py-1 px-3">
-          <v-layout wrap>
-            <v-flex xs12>
+        </v-col>
+        <v-col cols="12" class="py-1 px-3">
+          <v-row no-gutters>
+            <v-col cols="12">
               <h3 class="coffee-name white--text">{{ coffee.name }}</h3>
-            </v-flex>
-            <v-flex xs12>
+            </v-col>
+            <v-col cols="12">
               <h4 class="coffee-desc">{{ coffee.desc }}</h4>
-            </v-flex>
-            <v-flex xs12>
+            </v-col>
+            <v-col cols="12">
               <h4 class="coffee-price">{{ coffee.unit_price.toFixed(2) }}€ / unité</h4>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex shrink class="px-2">
-          <v-layout wrap>
-            <v-flex>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12" class="px-2">
+          <v-row no-gutters>
+            <v-col>
               <intensity
                   :length="12"
                   :value="coffee.intensity"
               />
-            </v-flex>
-            <v-flex shrink>
+            </v-col>
+            <v-col cols="auto">
               <img :src="typeIcon" alt="Type café">
-            </v-flex>
-          </v-layout>
-        </v-flex>
-      </v-layout>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-responsive>
   </v-hover>
 </template>
+
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import Intensity from '@/components/Intensity.vue'

@@ -1,32 +1,32 @@
 <template>
-  <v-layout justify-center class="coffee-grid mt-4">
-    <v-flex class="coffee-grid__frame">
-      <v-layout wrap>
-        <v-flex xs12 class="mb-4" v-if="$vuetify.breakpoint.mdAndUp">
-          <v-layout wrap>
-            <v-flex xs12>
+  <v-row no-gutters justify="center" class="coffee-grid mt-4">
+    <v-col class="coffee-grid__frame">
+      <v-row no-gutters>
+        <v-col cols="12" class="mb-4" v-if="$vuetify.breakpoint.mdAndUp">
+          <v-row no-gutters>
+            <v-col cols="12">
               <div class="coffee-connector">&nbsp;</div>
-            </v-flex>
-            <v-flex class="fragments-five coffee-name">Ristretto</v-flex>
-            <v-flex class="fragments-five coffee-name">Espresso</v-flex>
-            <v-flex class="fragments-five coffee-name">Lungo</v-flex>
-            <v-flex class="fragments-five coffee-name">Decaffeinato</v-flex>
-            <v-flex class="fragments-five coffee-name">Variations</v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex v-if="loadingList" style="min-height: 70vh">
-          <v-layout column justify-center fill-height>
-            <v-flex shrink class="text-xs-center">
+            </v-col>
+            <v-col class="fragments-five coffee-name">Ristretto</v-col>
+            <v-col class="fragments-five coffee-name">Espresso</v-col>
+            <v-col class="fragments-five coffee-name">Lungo</v-col>
+            <v-col class="fragments-five coffee-name">Decaffeinato</v-col>
+            <v-col class="fragments-five coffee-name">Variations</v-col>
+          </v-row>
+        </v-col>
+        <v-col v-if="loadingList" style="min-height: 70vh">
+          <v-row no-gutters justify="center" align="center" class="fill-height">
+            <v-col cols="auto" class="text-xs-center">
               <v-progress-circular indeterminate color="white" :size="50"/>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex shrink v-for="(coffee, i) of coffeeList" :key="i" v-else>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="auto" v-for="(coffee, i) of coffeeList" :key="i" v-else>
           <coffee-tile :coffee="coffee"/>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 <script lang="ts">
 import { Vue, Component, Watch, Inject } from 'vue-property-decorator'

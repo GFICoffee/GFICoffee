@@ -2,28 +2,28 @@
   <v-snackbar class="snackbar-global" :multi-line="!!currentSnackbarEntry.title && !!currentSnackbarEntry.message"
               v-if="currentSnackbarEntry"
               v-bind="currentSnackbarEntry" v-model="snackbarDisplayed">
-    <v-layout>
-      <v-flex shrink v-if="currentSnackbarEntry.icon" class="pr-2">
+    <v-row no-gutters>
+      <v-col cols="auto" v-if="currentSnackbarEntry.icon" class="pr-2">
         <v-icon class="vertical-center">{{ currentSnackbarEntry.icon }}</v-icon>
-      </v-flex>
-      <v-flex class="white--text">
-        <v-layout column>
-          <v-flex v-if="currentSnackbarEntry.title">
+      </v-col>
+      <v-col class="white--text">
+        <v-row no-gutters>
+          <v-col cols="12" v-if="currentSnackbarEntry.title">
             <h4>{{ currentSnackbarEntry.title }}</h4>
-          </v-flex>
-          <v-flex v-if="currentSnackbarEntry.message" v-html="currentSnackbarEntry.message">
-          </v-flex>
-        </v-layout>
-      </v-flex>
-      <v-flex shrink class="pl-3" v-if="currentSnackbarEntry.button">
-        <v-btn dark flat @click="currentSnackbarEntry.button.action()" class="vertical-center">{{ currentSnackbarEntry.button.text }}</v-btn>
-      </v-flex>
-      <v-flex shrink class="pl-2" v-if="currentSnackbarEntry.closable">
-        <v-btn dark flat @click.native="snackbarDisplayed = false" class="vertical-center">
+          </v-col>
+          <v-col cols="12" v-if="currentSnackbarEntry.message" v-html="currentSnackbarEntry.message">
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="auto" class="pl-3" v-if="currentSnackbarEntry.button">
+        <v-btn dark text @click="currentSnackbarEntry.button.action()" class="vertical-center">{{ currentSnackbarEntry.button.text }}</v-btn>
+      </v-col>
+      <v-col cols="auto" class="pl-2" v-if="currentSnackbarEntry.closable">
+        <v-btn dark text @click.native="snackbarDisplayed = false" class="vertical-center">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-snackbar>
 </template>
 

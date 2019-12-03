@@ -1,50 +1,56 @@
 <template>
-  <v-layout wrap justify-center class="navigator py-3">
-    <v-flex sm8 :shrink="$vuetify.breakpoint.xsOnly">
-      <v-layout class="logos">
-        <v-flex shrink>
+  <v-row no-gutters justify="center" class="navigator py-3">
+    <v-col cols="auto" sm="8">
+      <v-row no-gutters class="logos">
+        <v-col cols="auto">
           <img :src="logo" alt="Logo GFI" height="60">
-        </v-flex>
-        <v-flex shrink class="mx-2">
+        </v-col>
+        <v-col cols="auto" class="mx-2">
           <v-icon color="white" class="x">mdi-close</v-icon>
-        </v-flex>
-        <v-flex shrink>
+        </v-col>
+        <v-col cols="auto">
           <img :src="logoNespresso" alt="Logo Nespresso" height="60">
-        </v-flex>
+        </v-col>
         <v-spacer/>
-        <v-flex shrink>
-          <v-layout column justify-center fill-height class="white--text">
+        <v-col cols="auto">
+          <v-row no-gutters justify="center" align="center" class="white--text fill-height">
             <template v-if="!authenticated">
-              <v-flex shrink class="subheading text-uppercase text-xs-center pointer" @click="login()">Connexion
-              </v-flex>
+              <v-col cols="12" class="subheading text-uppercase text-xs-center pointer" @click="login()">Connexion
+              </v-col>
             </template>
             <template v-else>
-              <v-flex shrink class="subheading text-uppercase text-xs-center pointer">
+              <v-col cols="12" class="subheading text-uppercase text-xs-center pointer">
                 <v-menu offset-y transition="slide-y-transition">
-                  <div slot="activator">{{ username }}</div>
+                  <template v-slot:activator="{ on }">
+                    <div v-on="on">{{ username }}</div>
+                  </template>
                   <v-list>
-                    <v-list-tile class="subheading text-uppercase text-xs-center" @click="accountDialog = true">
-                      Mon compte
-                    </v-list-tile>
-                    <v-list-tile class="subheading text-uppercase text-xs-center" @click="auth.logout()">
-                      Déconnexion
-                    </v-list-tile>
+                    <v-list-item class="subheading text-uppercase text-xs-center" @click="accountDialog = true">
+                      <v-list-item-content>
+                        <v-list-item-title>Mon compte</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item class="subheading text-uppercase text-xs-center" @click="auth.logout()">
+                      <v-list-item-content>
+                        <v-list-item-title>Déconnexion</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
-              </v-flex>
+              </v-col>
             </template>
-          </v-layout>
-        </v-flex>
-      </v-layout>
-    </v-flex>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-col>
     <v-dialog
-        v-model="accountDialog"
-        width="700"
-        :fullscreen="$vuetify.breakpoint.smAndDown"
+      v-model="accountDialog"
+      width="700"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
     >
       <account @close="accountDialog = false" :dialog-status="accountDialog"/>
     </v-dialog>
-  </v-layout>
+  </v-row>
 </template>
 <script lang="ts">
 import { Vue, Component, Inject } from 'vue-property-decorator'

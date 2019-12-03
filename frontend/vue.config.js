@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const gitRevisionPlugin = new GitRevisionPlugin()
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 let settings
 try {
@@ -13,10 +14,12 @@ settings = Object.assign({}, require('./vue.config.settings.default'), settings)
 
 const config = {
   lintOnSave: true,
+  transpileDependencies: ['vuetify'],
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'development') {
       config.entry['app'].push(require.resolve(`webpack-dev-server/client`) + (settings.clientUrl ? '?' + settings.clientUrl : ''))
     }
+    config.plugins.push(new VuetifyLoaderPlugin())
     config.plugins.push(gitRevisionPlugin)
     config.plugins.push(new webpack.DefinePlugin({
       'VERSION': JSON.stringify(gitRevisionPlugin.version()),

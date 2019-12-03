@@ -1,9 +1,9 @@
 <template>
-  <v-layout class="intensity">
-    <v-flex shrink>
+  <v-row no-gutters class="intensity">
+    <v-col cols="auto">
       <div class="intensity-box white--text">{{ value }}</div>
-    </v-flex>
-    <v-flex>
+    </v-col>
+    <v-col>
       <div class="intensity-bar">
         <span
             v-for="i in range" :key="i"
@@ -11,8 +11,8 @@
             :class="{ white: i < value, 'secondary lighten-3': i >= value }"
         >&nbsp;</span>
       </div>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'

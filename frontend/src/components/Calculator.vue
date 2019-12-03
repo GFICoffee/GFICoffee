@@ -1,79 +1,81 @@
 <template>
-  <v-layout justify-center class="calculator">
-    <v-flex md9 xs12>
-      <v-layout column>
-        <v-flex v-for="(coffee, i) of selectedCoffeeList" :key="i" class="coffee-choice pt-4 pb-2">
-          <v-layout>
-            <v-flex>
+  <v-row no-gutters justify="center" class="calculator">
+    <v-col cols="12" md="9">
+      <v-row no-gutters>
+        <v-col cols="12" v-for="(coffee, i) of selectedCoffeeList" :key="i" class="coffee-choice pt-4 pb-2">
+          <v-row no-gutters align="center">
+            <v-col>
               <h2 class="white--text">{{ coffee.name }}</h2>
               <h6 class="white--text">{{ coffee.unit_price.toFixed(2) }}&nbsp;€ / unité</h6>
-            </v-flex>
-            <v-flex shrink>
+            </v-col>
+            <v-col cols="auto">
               <v-select
                   :items="quantities"
                   class="quantity-field mr-3"
                   label="Quantité (x30)"
                   color="white"
                   hide-details
+                  dense
                   type="number"
                   v-model="coffee.quantity30"
                   clearable
               />
-            </v-flex>
-            <v-flex shrink>
+            </v-col>
+            <v-col cols="auto">
               <v-select
                   :items="quantities"
                   class="quantity-field mr-3"
                   label="Quantité (x50)"
                   color="white"
                   hide-details
+                  dense
                   type="number"
                   v-model="coffee.quantity50"
                   clearable
               />
-            </v-flex>
-            <v-flex shrink>
+            </v-col>
+            <v-col cols="auto">
               <h3 class="white--text">{{ coffeePrice(coffee).toFixed(2) }}&nbsp;€</h3>
-            </v-flex>
-            <v-flex shrink>
+            </v-col>
+            <v-col cols="auto">
               <v-icon class="ml-3" @click="unselectCoffee(coffee)">mdi-close</v-icon>
-            </v-flex>
-          </v-layout>
-        </v-flex>
+            </v-col>
+          </v-row>
+        </v-col>
 
-        <v-flex class="coffee-choice pt-4 pb-2">
-          <v-layout>
-            <v-flex>
+        <v-col cols="12" class="coffee-choice pt-4 pb-2">
+          <v-row no-gutters>
+            <v-col>
               <h2 class="white--text">Total</h2>
-            </v-flex>
-            <v-flex shrink>
+            </v-col>
+            <v-col cols="auto">
               <h3 class="white--text">{{ totalPrice.toFixed(2) }}&nbsp;€</h3>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex>
-          <v-layout justify-end>
-            <v-flex shrink>
-              <v-btn ouline @click="confirmDialog = true" :disabled="!canOrder">Commander</v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12">
+          <v-row no-gutters justify="end">
+            <v-col cols="auto">
+              <v-btn oulined @click="confirmDialog = true" :disabled="!canOrder" class="my-2">Commander</v-btn>
               <v-dialog v-model="confirmDialog" width="500">
                 <v-card class="confirm pb-2 px-3" color="secondary lighten-1">
                   <v-card-title class="headline white--text pl-0">Confirmation</v-card-title>
-                  <v-flex class="white--text">
+                  <v-col class="white--text">
                     Êtes-vous sûr de vouloir passer cette commande ?
-                  </v-flex>
+                  </v-col>
                   <v-card-actions>
                     <v-spacer/>
-                    <v-btn flat @click="confirmDialog = false">Non</v-btn>
-                    <v-btn outline @click="order()" :loading="orderLoading">Oui</v-btn>
+                    <v-btn text @click="confirmDialog = false">Non</v-btn>
+                    <v-btn outlined @click="order()" :loading="orderLoading">Oui</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 <script lang="ts">
 import { Vue, Component, Inject } from 'vue-property-decorator'
@@ -197,9 +199,5 @@ h6 {
 
 .coffee-choice:not(:last-child) {
   border-bottom-color: #4e4e4e !important;
-}
-
-.quantity-field {
-  transform: translateY(-50%);
 }
 </style>

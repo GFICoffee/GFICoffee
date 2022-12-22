@@ -12,7 +12,7 @@
     "@mdi/font": "^3.0.39",
     "auth-toolbox": "^5.2.0",
     "axios": "^0.18.1",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "material-design-icons-iconfont": "^3.0.3",
